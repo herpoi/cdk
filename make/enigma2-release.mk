@@ -1,7 +1,7 @@
 #
 # auxiliary targets for model-specific builds
 #
-
+DATENOW=`date +%Y-%m-%d`
 #
 # release_common_utils
 #
@@ -893,9 +893,21 @@ endif
 	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
 		cp -f $(targetprefix)/usr/bin/enigma2 $(prefix)/release/usr/local/bin/enigma2; \
 	fi
+	if [ -e $(targetprefix)/usr/bin/enigma2-gstepl ]; then \
+		cp -f $(targetprefix)/usr/bin/enigma2-gstepl $(prefix)/release/usr/bin/enigma2-multiframework-$(DATENOW); \
+	fi
+	if [ -e $(targetprefix)/usr/bin/enigma2-gst ]; then \
+		cp -f $(targetprefix)/usr/bin/enigma2-gst $(prefix)/release/usr/bin/enigma2-$(DATENOW); \
+	fi
 
 	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
 		cp -f $(targetprefix)/usr/local/bin/enigma2 $(prefix)/release/usr/local/bin/enigma2; \
+	fi
+	if [ -e $(targetprefix)/usr/local/bin/enigma2-gstepl ]; then \
+		cp -f $(targetprefix)/usr/local/bin/enigma2-gstepl $(prefix)/release/usr/local/bin/enigma2-gstepl; \
+	fi
+	if [ -e $(targetprefix)/usr/local/bin/enigma2-gst ]; then \
+		cp -f $(targetprefix)/usr/local/bin/enigma2-gst $(prefix)/release/usr/local/bin/enigma2-gst; \
 	fi
 
 	cp -a $(targetprefix)/usr/local/share/enigma2/* $(prefix)/release/usr/local/share/enigma2
@@ -1147,6 +1159,20 @@ $(D)/%release_enigma2: release_enigma2_base release_enigma2_$(TF7700)$(HL101)$(V
 # sh4-linux-strip all
 #
 	find $(prefix)/release/ -name '*' -exec sh4-linux-strip --strip-unneeded {} &>/dev/null \;
+
+#
+# Packages
+#
+	rm -rf $(prefix)/packages || true
+	$(INSTALL_DIR) $(prefix)/packages 
+
+#
+# enigma2-release-package
+#
+	if [ -d $(prefix)/packages ]; then \
+		cd $(prefix)/release/; \
+		tar zcf ../packages/gospli-release_`date +%Y.%m.%d-%H-%M`.tar.gz .; \
+	fi
 
 #
 # release-clean
