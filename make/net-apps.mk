@@ -291,9 +291,10 @@ $(D)/openvpn: $(D)/bootstrap $(OPENSSL) @DEPENDS_openvpn@
 			--target=$(target) \
 			--prefix=/usr \
 			--disable-lzo \
-			--disable-plugins \
+			--disable-plugin-auth-pam \
+			--enable-password-save \
 		&& \
-		$(MAKE) && \
+		$(MAKE) all && \
 		@INSTALL_openvpn@
 	@CLEANUP_openvpn@
 	touch $@
