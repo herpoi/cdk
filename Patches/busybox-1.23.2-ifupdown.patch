@@ -1,20 +1,20 @@
---- a/networking/ifupdown.org.c	2013-02-15 11:36:01.000000000 +0100
-+++ b/networking/ifupdown.c	2013-02-15 11:37:57.000000000 +0100
-@@ -540,7 +540,7 @@
- 		"pump -i %iface% -k",
- 	},
- 	{ "udhcpc",
--		"udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid -i %iface%[[ -H %hostname%]][[ -c %client%]]"
-+		"udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid -i %iface%[[ -x hostname:%hostname%]][[ -c %client%]]"
- 				"[[ -s %script%]][[ %udhcpc_opts%]]",
- 		"kill `cat /var/run/udhcpc.%iface%.pid` 2>/dev/null",
- 	},
-@@ -580,7 +580,7 @@
- 		return 0;
- #  endif
- 	return execute("udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid "
--			"-i %iface%[[ -H %hostname%]][[ -c %client%]][[ -s %script%]][[ %udhcpc_opts%]]",
-+			"-i %iface%[[ -x hostname:%hostname%]][[ -c %client%]][[ -s %script%]][[ %udhcpc_opts%]]",
- 			ifd, exec);
- }
+--- a/networking/ifupdown.c
++++ b/networking/ifupdown.c
+@@ -395,7 +395,7 @@ static int FAST_FUNC static_up6(struct interface_defn_t *ifd, execfn *exec)
+ 	result = execute("ip addr add %address%/%netmask% dev %iface%[[ label %label%]]", ifd, exec);
+ 	result += execute("ip link set[[ mtu %mtu%]][[ addr %hwaddress%]] %iface% up", ifd, exec);
+ 	/* Was: "[[ ip ....%gateway% ]]". Removed extra spaces w/o checking */
+-	result += execute("[[ip route add ::/0 via %gateway%]][[ prio %metric%]]", ifd, exec);
++	result += execute("[[ip route add ::/0 via %gateway%]][[ metric %metric%]]", ifd, exec);
  # else
+ 	result = execute("ifconfig %iface%[[ media %media%]][[ hw %hwaddress%]][[ mtu %mtu%]] up", ifd, exec);
+ 	result += execute("ifconfig %iface% add %address%/%netmask%", ifd, exec);
+@@ -482,7 +482,7 @@ static int FAST_FUNC static_up(struct interface_defn_t *ifd, execfn *exec)
+ 	result = execute("ip addr add %address%/%bnmask%[[ broadcast %broadcast%]] "
+ 			"dev %iface%[[ peer %pointopoint%]][[ label %label%]]", ifd, exec);
+ 	result += execute("ip link set[[ mtu %mtu%]][[ addr %hwaddress%]] %iface% up", ifd, exec);
+-	result += execute("[[ip route add default via %gateway% dev %iface%[[ prio %metric%]]]]", ifd, exec);
++	result += execute("[[ip route add default via %gateway% dev %iface%[[ metric %metric%]]]]", ifd, exec);
+ 	return ((result == 3) ? 3 : 0);
+ # else
+ 	/* ifconfig said to set iface up before it processes hw %hwaddress%,

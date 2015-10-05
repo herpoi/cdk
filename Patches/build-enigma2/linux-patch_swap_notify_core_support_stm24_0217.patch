@@ -1,12 +1,6 @@
- include/linux/blkdev.h |    2 ++
- mm/swapfile.c          |    3 +++
- 2 files changed, 5 insertions(+), 0 deletions(-)
-
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 5c80189..af027de 100644
 --- a/include/linux/blkdev.h
 +++ b/include/linux/blkdev.h
-@@ -1280,6 +1280,8 @@ struct block_device_operations {
+@@ -1278,6 +1278,8 @@
  						unsigned long long);
  	int (*revalidate_disk) (struct gendisk *);
  	int (*getgeo)(struct block_device *, struct hd_geometry *);
@@ -15,11 +9,9 @@ index 5c80189..af027de 100644
  	struct module *owner;
  };
  
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 6c0585b..0c373bc 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -579,6 +579,7 @@ static int swap_entry_free(struct swap_info_struct *p,
+@@ -579,6 +579,7 @@
  	count = p->swap_map[offset];
  	/* free if no reference */
  	if (!count) {
@@ -27,7 +19,7 @@ index 6c0585b..0c373bc 100644
  		if (offset < p->lowest_bit)
  			p->lowest_bit = offset;
  		if (offset > p->highest_bit)
-@@ -587,6 +588,8 @@ static int swap_entry_free(struct swap_info_struct *p,
+@@ -587,6 +588,8 @@
  			swap_list.next = p - swap_info;
  		nr_swap_pages++;
  		p->inuse_pages--;

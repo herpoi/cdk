@@ -282,7 +282,7 @@ $(D)/udpxy: $(D)/bootstrap @DEPENDS_udpxy@
 #
 # openvpn
 #
-$(D)/openvpn: $(D)/bootstrap $(OPENSSL) @DEPENDS_openvpn@
+$(D)/openvpn: $(D)/bootstrap $(OPENSSL) $(D)/lzo @DEPENDS_openvpn@
 	@PREPARE_openvpn@
 	cd @DIR_openvpn@ && \
 		$(CONFIGURE) \
@@ -290,11 +290,15 @@ $(D)/openvpn: $(D)/bootstrap $(OPENSSL) @DEPENDS_openvpn@
 			--host=$(target) \
 			--target=$(target) \
 			--prefix=/usr \
-			--disable-lzo \
-			--disable-plugin-auth-pam \
+			--disable-selinux \
+			--disable-systemd \
+			--disable-plugins \
+			--disable-debug \
+			--disable-pkcs11 \
 			--enable-password-save \
+			--enable-small \
 		&& \
-		$(MAKE) all && \
+		$(MAKE) && \
 		@INSTALL_openvpn@
 	@CLEANUP_openvpn@
 	touch $@

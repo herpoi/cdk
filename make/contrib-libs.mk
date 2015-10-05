@@ -227,8 +227,10 @@ $(D)/libreadline: $(D)/bootstrap @DEPENDS_libreadline@
 $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng @DEPENDS_libfreetype@
 	@PREPARE_libfreetype@
 	cd @DIR_libfreetype@ && \
-		sed -i '/#define FT_CONFIG_OPTION_OLD_INTERNALS/d' include/config/ftoption.h && \
-		sed -i '/^FONT_MODULES += \(type1\|cid\|pfr\|type42\|pcf\|bdf\)/d' modules.cfg && \
+		sed -i  -e "/AUX.*.gxvalid/s@^# @@" \
+			-e "/AUX.*.otvalid/s@^# @@" \
+			modules.cfg && \
+		sed -ri -e 's:.*(#.*SUBPIXEL.*) .*:\1:' include/config/ftoption.h && \
 		$(CONFIGURE) \
 			--build=$(build) \
 			--host=$(target) \
