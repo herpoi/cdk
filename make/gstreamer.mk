@@ -69,7 +69,11 @@ $(D)/gst_plugins_good: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D)/
 $(D)/gst_plugins_bad: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base libmodplug @DEPENDS_gst_plugins_bad@
 	@PREPARE_gst_plugins_bad@
 	cd @DIR_gst_plugins_bad@ && \
-		$(CONFIGURE) \
+		$(BUILDENV) \
+		autoreconf --force --install && \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
 			--prefix=/usr \
 			--disable-fatal-warnings \
 			--enable-dvb \
@@ -227,7 +231,7 @@ $(D)/gst_plugin_subsink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base $(D
 	@PREPARE_gst_plugin_subsink@
 	cd @DIR_gst_plugin_subsink@ && \
 		aclocal --force -I m4 && \
-		libtoolize --copy --force && \
+		libtoolize --copy --ltdl --force && \
 		autoconf --force && \
 		autoheader --force && \
 		automake --add-missing --copy --force-missing --foreign && \

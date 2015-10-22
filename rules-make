@@ -293,6 +293,7 @@ xupnpd;1.0;xupnpd-1.0;xupnpd.git;extract:xupnpd.git;patch:xupnpd.patch
 udpxy;1.0.23-0;udpxy-1.0.23-0;udpxy.1.0.23-0-prod.tar.gz;extract:udpxy.1.0.23-0-prod.tar.gz;patch:udpxy-1.0.23-0.patch
 glibnetworking;2.45.1;glib-networking-2.45.1;glib-networking-2.45.1.tar.xz;extract:glib-networking-2.45.1.tar.xz
 openvpn;2.3.7;openvpn-2.3.7;openvpn-2.3.7.tar.xz;extract:openvpn-2.3.7.tar.xz
+openssh;7.1p1;openssh-7.1p1;openssh-7.1p1.tar.gz;extract:openssh-7.1p1.tar.gz
 
 
 >>?;rules-make-local

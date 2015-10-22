@@ -18,3 +18,21 @@
  	return ((result == 3) ? 3 : 0);
  # else
  	/* ifconfig said to set iface up before it processes hw %hwaddress%,
+@@ -540,7 +540,7 @@
+ 		"pump -i %iface% -k",
+ 	},
+ 	{ "udhcpc",
+-		"udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid -i %iface%[[ -H %hostname%]][[ -c %client%]]"
++		"udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid -i %iface%[[ -x hostname:%hostname%]][[ -c %client%]]"
+ 				"[[ -s %script%]][[ %udhcpc_opts%]]",
+ 		"kill `cat /var/run/udhcpc.%iface%.pid` 2>/dev/null",
+ 	},
+@@ -580,7 +580,7 @@
+ 		return 0;
+ #  endif
+ 	return execute("udhcpc " UDHCPC_CMD_OPTIONS " -p /var/run/udhcpc.%iface%.pid "
+-			"-i %iface%[[ -H %hostname%]][[ -c %client%]][[ -s %script%]][[ %udhcpc_opts%]]",
++			"-i %iface%[[ -x hostname:%hostname%]][[ -c %client%]][[ -s %script%]][[ %udhcpc_opts%]]",
+ 			ifd, exec);
+ }
+ # else

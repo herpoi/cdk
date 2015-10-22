@@ -254,6 +254,7 @@ xupnpd;make:install:DESTDIR=TARGET
 udpxy;make:install:INSTALLROOT=TARGET/usr
 glibnetworking;make:install:INSTALLROOT=TARGET
 openvpn;make:install:DESTDIR=TARGET
+openssh;make:install:DESTDIR=TARGET
 
 
 >>?;rules-install-local

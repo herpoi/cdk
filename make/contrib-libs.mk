@@ -979,6 +979,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(OPENSSL) $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @DE
 			--enable-muxer=image2 \
 			--enable-muxer=mpeg1video \
 			--enable-muxer=mpeg2video \
+			--enable-muxer=mpegts \
 			--enable-muxer=ogg \
 			\
 			--disable-parsers \

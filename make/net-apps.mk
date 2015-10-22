@@ -303,3 +303,22 @@ $(D)/openvpn: $(D)/bootstrap $(OPENSSL) $(D)/lzo @DEPENDS_openvpn@
 	@CLEANUP_openvpn@
 	touch $@
 
+$(D)/openssh: $(D)/bootstrap $(D)/zlib $(OPENSSL) @DEPENDS_openssh@
+	@PREPARE_openssh@
+	cd @DIR_openssh@ && \
+		CC=$(target)-gcc && \
+		./configure \
+			$(CONFIGURE_OPTS) \
+			--prefix=/usr \
+			--mandir=/usr/share/man \
+			--sysconfdir=/etc/ssh \
+			--libexecdir=/sbin \
+			--with-privsep-path=/share/empty \
+			--with-cppflags="-pipe -Os -I$(targetprefix)/usr/include" \
+			--with-ldflags=-"L$(targetprefix)/usr/lib" \
+		&& \
+		$(MAKE) && \
+		@INSTALL_openssh@
+	@CLEANUP_openssh@
+	touch $@
+

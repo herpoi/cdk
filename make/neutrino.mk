@@ -28,6 +28,7 @@ N_CFLAGS  = -Wall -W -Wshadow -g0 -pipe -Os -fno-strict-aliasing -DCPU_FREQ
 N_CPPFLAGS = -I$(driverdir)/bpamem
 N_CPPFLAGS += -I$(targetprefix)/usr/include/
 N_CPPFLAGS += -I$(buildprefix)/$(KERNEL_DIR)/include
+N_CPPFLAGS += -D__STDC_CONSTANT_MACROS
 
 if BOXTYPE_SPARK
 N_CPPFLAGS += -I$(driverdir)/frontcontroller/aotom_spark
