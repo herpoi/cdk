@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" == -h ] || [ "$1" == --help ]; then
- echo "Parameter 1: target system (1-36)"
+ echo "Parameter 1: target system (1-37)"
  echo "Parameter 2: kernel (1-5)"
  echo "Parameter 3: debug (y/N)"
  echo "Parameter 4: player (1-2)"
@@ -96,7 +96,8 @@ case $1 in
 		echo "   34) Fortis HS7119"
 		echo "   35) Fortis HS7819"
 		echo "   36) Fortis DP7000 (not finished yet)"
-		read -p "Select target (1-36)? ";;
+		echo "   37) Xsarius Alpha (Cuberevo 3000HD)"
+		read -p "Select target (1-37)? ";;
 esac
 
 case "$REPLY" in
@@ -135,6 +136,7 @@ case "$REPLY" in
 	34) TARGET="--enable-hs7119";BOXTYPE="--with-boxtype=hs7119";;
 	35) TARGET="--enable-hs7819";BOXTYPE="--with-boxtype=hs7819";;
 	36) TARGET="--enable-fortis_dp7000";BOXTYPE="--with-boxtype=fortis_dp7000";;
+	37) TARGET="--enable-cuberevo_3000hd";BOXTYPE="--with-boxtype=cuberevo_3000hd";;
 	 *) TARGET="--enable-atevio7500";BOXTYPE="--with-boxtype=atevio7500";;
 esac
 CONFIGPARAM="$CONFIGPARAM $TARGET $BOXTYPE"

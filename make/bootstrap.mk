@@ -102,6 +102,8 @@ $(D)/directories:
 	ln -s ../init.d $(targetprefix)/etc/rc.d/init.d
 	$(INSTALL) -d $(targetprefix)/lib/lsb
 	$(INSTALL) -d $(targetprefix)/usr/{bin,lib,local,sbin,share}
+	$(INSTALL) -d $(targetprefix)/usr/share/{aclocal,doc,info,locale,man,misc,nls}
+	$(INSTALL) -d $(targetprefix)/usr/share/man/man{1..9}
 	$(INSTALL) -d $(targetprefix)/usr/lib/pkgconfig
 	$(INSTALL) -d $(targetprefix)/usr/include/linux
 	$(INSTALL) -d $(targetprefix)/usr/include/linux/dvb

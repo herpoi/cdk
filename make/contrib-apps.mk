@@ -679,7 +679,7 @@ $(D)/hotplug_e2: $(D)/bootstrap @DEPENDS_hotplug_e2@
 #
 # shairport
 #
-$(D)/shairport: $(D)/bootstrap $(OPENSSL) $(D)/howl $(D)/libalsa @DEPENDS_shairport@
+$(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/libalsa @DEPENDS_shairport@
 	@PREPARE_shairport@
 	[ -d "$(archivedir)/shairport.git" ] && \
 	(cd $(archivedir)/shairport.git; git pull; cd "$(buildprefix)";); \
@@ -763,7 +763,7 @@ $(D)/mtd_utils: $(D)/bootstrap $(D)/zlib $(D)/lzo $(D)/e2fsprogs @DEPENDS_mtd_ut
 #
 # wget
 #
-$(D)/wget: $(D)/bootstrap $(OPENSSL) @DEPENDS_wget@
+$(D)/wget: $(D)/bootstrap $(D)/openssl @DEPENDS_wget@
 	@PREPARE_wget@
 	cd @DIR_wget@ && \
 		$(CONFIGURE) \

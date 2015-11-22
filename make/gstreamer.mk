@@ -7,6 +7,7 @@ $(D)/gstreamer: $(D)/bootstrap $(D)/glib2 $(D)/libxml2_e2 $(D)/glibnetworking @D
 	cd @DIR_gstreamer@ && \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--libexecdir=/usr/lib \
 			--disable-gtk-doc \
 			--disable-docbook \
 			--disable-dependency-tracking \

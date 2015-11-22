@@ -228,7 +228,7 @@ $(D)/wireless_tools: $(D)/bootstrap @DEPENDS_wireless_tools@
 #
 # libnl
 #
-$(D)/libnl: $(D)/bootstrap $(OPENSSL) @DEPENDS_libnl@
+$(D)/libnl: $(D)/bootstrap $(D)/openssl @DEPENDS_libnl@
 	@PREPARE_libnl@
 	cd @DIR_libnl@ && \
 		$(CONFIGURE) \
@@ -241,15 +241,22 @@ $(D)/libnl: $(D)/bootstrap $(OPENSSL) @DEPENDS_libnl@
 #
 # wpa_supplicant
 #
-$(D)/wpa_supplicant: $(D)/bootstrap $(OPENSSL) $(D)/wireless_tools @DEPENDS_wpa_supplicant@
+$(D)/wpa_supplicant: $(D)/bootstrap $(D)/openssl $(D)/wireless_tools @DEPENDS_wpa_supplicant@
 	@PREPARE_wpa_supplicant@
 	cd @DIR_wpa_supplicant@/wpa_supplicant && \
-		$(INSTALL) -m 644 $(buildprefix)/Patches/wpa_supplicant.config .config && \
-		export CFLAGS=-I$(targetprefix)/usr/include && \
-		export CPPFLAGS=-I$(targetprefix)/usr/include && \
+		cp -f defconfig .config && \
+		sed -i 's/CONFIG_DRIVER_NL80211=y/#CONFIG_DRIVER_NL80211=y/' .config && \
+		sed -i 's/#CONFIG_IEEE80211W=y/CONFIG_IEEE80211W=y/' .config && \
+		sed -i 's/#CONFIG_OS=unix/CONFIG_OS=unix/' .config && \
+		sed -i 's/#CONFIG_TLS=openssl/CONFIG_TLS=openssl/' .config && \
+		sed -i 's/#CONFIG_IEEE80211N=y/CONFIG_IEEE80211N=y/' .config && \
+		sed -i 's/#CONFIG_INTERWORKING=y/CONFIG_INTERWORKING=y/' .config && \
+		export CFLAGS="-pipe -Os -Wall -g0 -I$(targetprefix)/usr/include" && \
+		export CPPFLAGS="-I$(targetprefix)/usr/include" && \
 		export LIBS="-L$(targetprefix)/usr/lib -Wl,-rpath-link,$(targetprefix)/usr/lib" && \
 		export LDFLAGS="-L$(targetprefix)/usr/lib" && \
-		make CC=$(target)-gcc TARGETPREFIX=$(targetprefix) && \
+		export DESTDIR=$(targetprefix) && \
+		make CC=$(target)-gcc && \
 		$(target)-strip --strip-unneeded wpa_supplicant && \
 		@INSTALL_wpa_supplicant@
 	@CLEANUP_wpa_supplicant@
@@ -282,7 +289,7 @@ $(D)/udpxy: $(D)/bootstrap @DEPENDS_udpxy@
 #
 # openvpn
 #
-$(D)/openvpn: $(D)/bootstrap $(OPENSSL) $(D)/lzo @DEPENDS_openvpn@
+$(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo @DEPENDS_openvpn@
 	@PREPARE_openvpn@
 	cd @DIR_openvpn@ && \
 		$(CONFIGURE) \
@@ -303,7 +310,7 @@ $(D)/openvpn: $(D)/bootstrap $(OPENSSL) $(D)/lzo @DEPENDS_openvpn@
 	@CLEANUP_openvpn@
 	touch $@
 
-$(D)/openssh: $(D)/bootstrap $(D)/zlib $(OPENSSL) @DEPENDS_openssh@
+$(D)/openssh: $(D)/bootstrap $(D)/zlib $(D)/openssl @DEPENDS_openssh@
 	@PREPARE_openssh@
 	cd @DIR_openssh@ && \
 		CC=$(target)-gcc && \

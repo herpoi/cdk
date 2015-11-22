@@ -42,7 +42,7 @@ target_alias="sh4-linux"
 
 AC_ARG_WITH(boxtype,
 	[  --with-boxtype    valid values: ufs910, ufs912, ufs913, ufs922, ufc960
-                             valid values: ipbox55, ipbox99, ipbox9900, cuberevo, cuberevo_mini, cuberevo_mini2, cuberevo_mini_fta, cuberevo_250hd, cuberevo_2000hd, cuberevo_9500hd
+                             valid values: ipbox55, ipbox99, ipbox9900, cuberevo, cuberevo_mini, cuberevo_mini2, cuberevo_mini_fta, cuberevo_250hd, cuberevo_2000hd, cuberevo_9500hd, cuberevo_3000hd
                              valid values: tf7700, fortis_hdbox, octagon1008, atevio7500, spark, spark7162, hl101, hs7110, hs7810a, hs7119, hs7819, adb_box, atemio520, atemio530, vip, homecast5101
                              valid values: vitamin_hd5000, sagemcom88, arivalink200, fortis_dp7000],
 	[case "${withval}" in
@@ -90,6 +90,9 @@ dnl		To-Do: extend CPU types and kernel versions when needed
 			BOXTYPE="$withval"
 			;;
 		cuberevo_9500hd)
+			BOXTYPE="$withval"
+			;;
+		cuberevo_3000hd)
 			BOXTYPE="$withval"
 			;;
 		tf7700)
@@ -174,6 +177,7 @@ AM_CONDITIONAL(BOXTYPE_CUBEREVO_MINI_FTA, test "$BOXTYPE" = "cuberevo_mini_fta")
 AM_CONDITIONAL(BOXTYPE_CUBEREVO_250HD, test "$BOXTYPE" = "cuberevo_250hd")
 AM_CONDITIONAL(BOXTYPE_CUBEREVO_2000HD, test "$BOXTYPE" = "cuberevo_2000hd")
 AM_CONDITIONAL(BOXTYPE_CUBEREVO_9500HD, test "$BOXTYPE" = "cuberevo_9500hd")
+AM_CONDITIONAL(BOXTYPE_CUBEREVO_3000HD, test "$BOXTYPE" = "cuberevo_3000hd")
 AM_CONDITIONAL(BOXTYPE_TF7700, test "$BOXTYPE" = "tf7700")
 AM_CONDITIONAL(BOXTYPE_FORTIS_HDBOX, test "$BOXTYPE" = "fortis_hdbox")
 AM_CONDITIONAL(BOXTYPE_OCTAGON1008, test "$BOXTYPE" = "octagon1008")
@@ -225,6 +229,8 @@ elif test "$BOXTYPE" = "cuberevo_2000hd"; then
 	AC_DEFINE(HAVE_CUBEREVO_2000HD_HARDWARE, 1, [building for a cuberevo_2000hd])
 elif test "$BOXTYPE" = "cuberevo_9500hd"; then
 	AC_DEFINE(HAVE_CUBEREVO_9500HD_HARDWARE, 1, [building for an cuberevo_9500hd])
+elif test "$BOXTYPE" = "cuberevo_3000hd"; then
+	AC_DEFINE(HAVE_CUBEREVO_3000HD_HARDWARE, 1, [building for an cuberevo_3000hd])
 elif test "$BOXTYPE" = "tf7700"; then
 	AC_DEFINE(HAVE_TF7700_HARDWARE, 1, [building for a tf7700])
 elif test "$BOXTYPE" = "fortis_hdbox"; then

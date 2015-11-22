@@ -38,11 +38,11 @@ $(D)/libncurses: $(D)/bootstrap @DEPENDS_libncurses@
 	touch $@
 
 #
-# openssl_e2
+# openssl
 #
-$(D)/openssl_e2: $(D)/bootstrap @DEPENDS_openssl_e2@
-	@PREPARE_openssl_e2@
-	cd @DIR_openssl_e2@ && \
+$(D)/openssl: $(D)/bootstrap @DEPENDS_openssl@
+	@PREPARE_openssl@
+	cd @DIR_openssl@ && \
 		$(BUILDENV) \
 		./Configure -DL_ENDIAN shared no-hw no-engine linux-generic32 \
 			--prefix=/usr \
@@ -50,16 +50,16 @@ $(D)/openssl_e2: $(D)/bootstrap @DEPENDS_openssl_e2@
 			--openssldir=/.remove \
 		&& \
 		$(MAKE) && \
-		@INSTALL_openssl_e2@
-	@CLEANUP_openssl_e2@
+		@INSTALL_openssl@
+	@CLEANUP_openssl@
 	touch $@
 
 #
-# openssl
+# openssl_old
 #
-$(D)/openssl: $(D)/bootstrap @DEPENDS_openssl@
-	@PREPARE_openssl@
-	cd @DIR_openssl@ && \
+$(D)/openssl_old: $(D)/bootstrap @DEPENDS_openssl_old@
+	@PREPARE_openssl_old@
+	cd @DIR_openssl_old@ && \
 		$(BUILDENV) \
 		./Configure shared linux-sh no-hw \
 			--prefix=/usr \
@@ -67,8 +67,8 @@ $(D)/openssl: $(D)/bootstrap @DEPENDS_openssl@
 		&& \
 		$(MAKE) depend && \
 		$(MAKE) && \
-		@INSTALL_openssl@
-	@CLEANUP_openssl@
+		@INSTALL_openssl_old@
+	@CLEANUP_openssl_old@
 	touch $@
 
 #
@@ -230,7 +230,7 @@ $(D)/libfreetype: $(D)/bootstrap $(D)/zlib $(D)/bzip2 $(D)/libpng @DEPENDS_libfr
 		sed -i  -e "/AUX.*.gxvalid/s@^# @@" \
 			-e "/AUX.*.otvalid/s@^# @@" \
 			modules.cfg && \
-		sed -ri -e 's:.*(#.*SUBPIXEL.*) .*:\1:' include/config/ftoption.h && \
+		sed -ri -e 's:.*(#.*SUBPIXEL.*) .*:\1:' include/freetype/config/ftoption.h && \
 		$(CONFIGURE) \
 			--build=$(build) \
 			--host=$(target) \
@@ -414,7 +414,7 @@ $(D)/libgif_e2: $(D)/bootstrap @DEPENDS_libgif_e2@
 #
 # libcurl
 #
-$(D)/libcurl: $(D)/bootstrap $(OPENSSL) $(D)/zlib @DEPENDS_libcurl@
+$(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib @DEPENDS_libcurl@
 	@PREPARE_libcurl@
 	cd @DIR_libcurl@ && \
 		$(CONFIGURE) \
@@ -918,15 +918,13 @@ $(D)/libfdk_aac: $(D)/bootstrap @DEPENDS_libfdk_aac@
 if ENABLE_ENIGMA2
 FFMPEG_EXTRA  = --enable-librtmp
 FFMPEG_EXTRA += --enable-protocol=librtmp --enable-protocol=librtmpe --enable-protocol=librtmps --enable-protocol=librtmpt --enable-protocol=librtmpte
-OPENSSL = openssl_e2
 LIBRTMPDUMP = librtmpdump
 else
 FFMPEG_EXTRA = --disable-iconv
 LIBXML2 = libxml2
-OPENSSL = openssl
 endif
 
-$(D)/ffmpeg: $(D)/bootstrap $(OPENSSL) $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @DEPENDS_ffmpeg@
+$(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @DEPENDS_ffmpeg@
 	@PREPARE_ffmpeg@
 	cd @DIR_ffmpeg@ && \
 		./configure \
@@ -966,6 +964,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(OPENSSL) $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @DE
 			--disable-mipsdspr2 \
 			--disable-mipsfpu \
 			--disable-fast-unaligned \
+			\
 			--disable-dxva2 \
 			--disable-vaapi \
 			--disable-vdpau \
@@ -1081,6 +1080,9 @@ $(D)/ffmpeg: $(D)/bootstrap $(OPENSSL) $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @DE
 			--enable-protocol=rtmpt \
 			--enable-protocol=rtmpte \
 			--enable-protocol=rtmpts \
+			--enable-protocol=rtp \
+			--enable-protocol=tcp \
+			--enable-protocol=udp \
 			\
 			--disable-filters \
 			--enable-filter=scale \
@@ -1702,7 +1704,7 @@ $(D)/pugixml: $(D)/bootstrap @DEPENDS_pugixml@
 #
 # librtmpdump
 #
-$(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(OPENSSL) @DEPENDS_librtmpdump@
+$(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl @DEPENDS_librtmpdump@
 	@PREPARE_librtmpdump@
 	[ -d "$(archivedir)/rtmpdump.git" ] && \
 	(cd $(archivedir)/rtmpdump.git; git pull; cd "$(buildprefix)";); \

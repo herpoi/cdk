@@ -1,5 +1,5 @@
-*** a/arch/sh/kernel/setup.c
---- b/arch/sh/kernel/setup.c
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
 @@ -389,6 +389,34 @@
  #endif
  #endif
@@ -384,7 +384,7 @@
 -			.tx_enabled = 1,
 -			.tx_od_enabled = 1, });
 +	/* enable optical out */
-+	stpio_request_pin (10, 6, "opt_out", STPIO_ALT_OUT);
++	stpio_request_pin(10, 6, "opt_out", STPIO_ALT_OUT);
  
  	return platform_add_devices(mb680_devices, ARRAY_SIZE(mb680_devices));
  }

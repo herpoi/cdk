@@ -30,7 +30,7 @@ $(D)/host_python: @DEPENDS_host_python@
 #
 # python
 #
-$(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(OPENSSL) $(D)/libffi $(D)/bzip2 $(D)/libreadline $(D)/sqlite @DEPENDS_python@
+$(D)/python: $(D)/bootstrap $(D)/host_python $(D)/libncurses $(D)/zlib $(D)/openssl $(D)/libffi $(D)/bzip2 $(D)/libreadline $(D)/sqlite @DEPENDS_python@
 	@PREPARE_python@
 	( cd @DIR_python@ && \
 		CONFIG_SITE= \
