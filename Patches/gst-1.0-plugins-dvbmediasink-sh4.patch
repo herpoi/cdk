@@ -208,7 +208,7 @@
  			if (self->fd >= 0) ioctl(self->fd, VIDEO_STOP, 0);
  			self->playing = FALSE;
  		}
--		if (self->fd < 0 || ioctl(self->fd, VIDEO_SET_STREAMTYPE, self->stream_type) < 0)
+-		if (!self->playing && (self->fd < 0 || ioctl(self->fd, VIDEO_SET_STREAMTYPE, self->stream_type) < 0))
 -		{
 -			GST_ELEMENT_ERROR(self, STREAM, CODEC_NOT_FOUND, (NULL), ("hardware decoder can't handle streamtype %i", self->stream_type));
 +		if (self->use_set_encoding)
