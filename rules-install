@@ -14,10 +14,10 @@ host_u_boot_tools
 #
 # Core
 #
-#squashfs
-ccache;make:install:DESTDIR=HOST
-cramfs;install:mkcramfs:HOST/bin
 ipkg_utils;make:install
+ccache;make:install:DESTDIR=HOST
+host_cramfs;install:mkcramfs:HOST/bin
+host_squashfs;make:install:INSTALL_DIR=HOST/bin
 host_pkgconfig;make:install
 host_module_init_tools;make:install
 host_mtd_utils;make:install:DESTDIR=HOST/bin

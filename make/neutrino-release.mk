@@ -1026,6 +1026,7 @@ endif
 	rm -rf $(prefix)/release/usr/lib/alsa-lib
 	rm -rf $(prefix)/release/usr/lib/alsaplayer
 	rm -rf $(prefix)/release/usr/lib/audit
+	rm -f $(prefix)/release/usr/lib/libc.so
 	rm -rf $(prefix)/release/usr/lib/glib-2.0
 #	rm -f $(prefix)/release/usr/lib/libexpat*
 	rm -f $(prefix)/release/usr/lib/xml2Conf.sh

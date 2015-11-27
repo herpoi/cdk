@@ -10,9 +10,6 @@ $(targetprefix)/var/etc/.version:
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git describe`" >> $@
 
-#
-#
-#
 NEUTRINO_DEPS  = bootstrap libcurl libpng libjpeg libgif libfreetype
 NEUTRINO_DEPS += ffmpeg lua luaexpat luacurl libdvbsipp libsigc libopenthreads libusb libalsa
 NEUTRINO_DEPS += $(EXTERNALLCD_DEP)
@@ -54,62 +51,6 @@ endif
 OBJDIR = $(buildtmp)
 N_OBJDIR = $(OBJDIR)/neutrino-mp
 LH_OBJDIR = $(OBJDIR)/libstb-hal
-
-################################################################################
-#
-# libstb-hal-github-old
-#
-NEUTRINO_MP_LIBSTB_GH_OLD_PATCHES =
-
-$(D)/libstb-hal-github-old.do_prepare:
-	rm -rf $(sourcedir)/libstb-hal-github-old
-	rm -rf $(sourcedir)/libstb-hal-github-old.org
-	rm -rf $(LH_OBJDIR)
-	[ -d "$(archivedir)/libstb-hal-github-old.git" ] && \
-	(cd $(archivedir)/libstb-hal-github-old.git; git pull; cd "$(buildprefix)";); \
-	[ -d "$(archivedir)/libstb-hal-github-old.git" ] || \
-	git clone https://github.com/MaxWiesel/libstb-hal-old.git $(archivedir)/libstb-hal-github-old.git; \
-	cp -ra $(archivedir)/libstb-hal-github-old.git $(sourcedir)/libstb-hal-github-old;\
-	cp -ra $(sourcedir)/libstb-hal-github-old $(sourcedir)/libstb-hal-github-old.org
-	for i in $(NEUTRINO_MP_LIBSTB_GH_OLD_PATCHES); do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(sourcedir)/libstb-hal-github-old && patch -p1 -i $$i; \
-	done;
-	touch $@
-
-$(D)/libstb-hal-github-old.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR) && \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR) && \
-	cd $(LH_OBJDIR) && \
-		$(sourcedir)/libstb-hal-github-old/autogen.sh && \
-		$(BUILDENV) \
-		$(sourcedir)/libstb-hal-github-old/configure \
-			--host=$(target) \
-			--build=$(build) \
-			--prefix= \
-			--with-target=cdk \
-			--with-boxtype=$(BOXTYPE) \
-			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
-			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-
-$(D)/libstb-hal-github-old.do_compile: libstb-hal-github-old.config.status
-	cd $(sourcedir)/libstb-hal-github-old && \
-		$(MAKE) -C $(LH_OBJDIR)
-	touch $@
-
-$(D)/libstb-hal-github-old: libstb-hal-github-old.do_prepare libstb-hal-github-old.do_compile
-	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(targetprefix)
-	touch $@
-
-libstb-hal-github-old-clean:
-	rm -f $(D)/libstb-hal-github-old
-	cd $(LH_OBJDIR) && \
-		$(MAKE) -C $(LH_OBJDIR) distclean
-
-libstb-hal-github-old-distclean:
-	rm -rf $(LH_OBJDIR)
-	rm -f $(D)/libstb-hal-github-old*
 
 ################################################################################
 #
@@ -268,101 +209,6 @@ neutrino-mp-cst-next-clean:
 neutrino-mp-cst-next-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-cst-next*
-
-################################################################################
-#
-# neutrino-mp-martii
-#
-yaud-neutrino-mp-martii-github: yaud-none lirc \
-		boot-elf neutrino-mp-martii-github release_neutrino
-	@TUXBOX_YAUD_CUSTOMIZE@
-
-#
-# neutrino-mp-martii-github
-#
-NEUTRINO_MP_MARTII_GH_PATCHES =
-
-$(D)/neutrino-mp-martii-github.do_prepare: | $(NEUTRINO_DEPS) libstb-hal-cst-next
-	rm -rf $(sourcedir)/neutrino-mp-martii-github
-	rm -rf $(sourcedir)/neutrino-mp-martii-github.org
-	rm -rf $(N_OBJDIR)
-	[ -d "$(archivedir)/neutrino-mp-martii-github.git" ] && \
-	(cd $(archivedir)/neutrino-mp-martii-github.git; git pull; cd "$(buildprefix)";); \
-	[ -d "$(archivedir)/neutrino-mp-martii-github.git" ] || \
-	git clone https://github.com/MaxWiesel/neutrino-mp-martii-test.git $(archivedir)/neutrino-mp-martii-github.git; \
-	cp -ra $(archivedir)/neutrino-mp-martii-github.git $(sourcedir)/neutrino-mp-martii-github; \
-	cp -ra $(sourcedir)/neutrino-mp-martii-github $(sourcedir)/neutrino-mp-martii-github.org
-	for i in $(NEUTRINO_MP_MARTII_GH_PATCHES); do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
-		set -e; cd $(sourcedir)/neutrino-mp-martii-github && patch -p1 -i $$i; \
-	done;
-	touch $@
-
-$(D)/neutrino-mp-martii-github.config.status:
-	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR) && \
-	cd $(N_OBJDIR) && \
-		$(sourcedir)/neutrino-mp-martii-github/autogen.sh && \
-		$(BUILDENV) \
-		$(sourcedir)/neutrino-mp-martii-github/configure \
-			--build=$(build) \
-			--host=$(target) \
-			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
-			--enable-giflib \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-stb-hal-includes=$(sourcedir)/libstb-hal-cst-next/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
-			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-
-$(sourcedir)/neutrino-mp-martii-github/src/gui/version.h:
-	@rm -f $@; \
-	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(sourcedir)/libstb-hal-cst-next ; then \
-		pushd $(sourcedir)/libstb-hal-cst-next ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(sourcedir)/neutrino-mp-martii-github ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(buildprefix) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@ ; \
-	fi
-
-$(D)/neutrino-mp-martii-github.do_compile: neutrino-mp-martii-github.config.status $(sourcedir)/neutrino-mp-martii-github/src/gui/version.h
-	cd $(sourcedir)/neutrino-mp-martii-github && \
-		$(MAKE) -C $(N_OBJDIR) all
-	touch $@
-
-$(D)/neutrino-mp-martii-github: neutrino-mp-martii-github.do_prepare neutrino-mp-martii-github.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(targetprefix) && \
-	rm -f $(targetprefix)/var/etc/.version
-	make $(targetprefix)/var/etc/.version
-	$(target)-strip $(targetprefix)/usr/local/bin/neutrino
-	$(target)-strip $(targetprefix)/usr/local/bin/pzapit
-	$(target)-strip $(targetprefix)/usr/local/bin/sectionsdcontrol
-	$(target)-strip $(targetprefix)/usr/local/sbin/udpstreampes
-	touch $@
-
-neutrino-mp-martii-github-clean:
-	rm -f $(D)/neutrino-mp-martii-github
-	rm -f $(sourcedir)/neutrino-mp-martii-github/src/gui/version.h
-	cd $(N_OBJDIR) && \
-		$(MAKE) -C $(N_OBJDIR) distclean
-
-neutrino-mp-martii-github-distclean:
-	rm -rf $(N_OBJDIR)
-	rm -f $(D)/neutrino-mp-martii-github*
 
 ################################################################################
 #

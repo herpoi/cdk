@@ -971,6 +971,7 @@ endif
 	rm -rf $(prefix)/release/usr/lib/m4-nofpu/
 	rm -rf $(prefix)/release/lib/modules/$(KERNELVERSION)
 	rm -rf $(prefix)/release/usr/lib/gcc
+	rm -f $(prefix)/release/usr/lib/libc.so
 	rm -rf $(prefix)/release/usr/lib/enigma2/python/Plugins/DemoPlugins
 	rm -rf $(prefix)/release/usr/lib/enigma2/python/Plugins/SystemPlugins/FrontprocessorUpgrade
 	rm -rf $(prefix)/release/usr/lib/enigma2/python/Plugins/SystemPlugins/NFIFlash
