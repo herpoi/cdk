@@ -1138,6 +1138,10 @@ endif
 		cp $(buildprefix)/root/firmware/as102_data1_st.hex $(prefix)/release/lib/firmware/; \
 		cp $(buildprefix)/root/firmware/as102_data2_st.hex $(prefix)/release/lib/firmware/; \
 	fi
+	if [ -e $(targetprefix)/lib/modules/$(KERNELVERSION)/extra/dvbt/siano/ ]; then \
+		cp $(targetprefix)/lib/modules/$(KERNELVERSION)/extra/dvbt/siano/* $(prefix)/release/lib/modules/; \
+		cp $(buildprefix)/root/firmware/dvb_nova_12mhz_b0.inp $(prefix)/release/lib/firmware/; \
+	fi
 
 #
 # The main target depends on the model.

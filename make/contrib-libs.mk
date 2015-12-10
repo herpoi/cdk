@@ -310,8 +310,8 @@ $(D)/libjpeg_turbo: $(D)/bootstrap @DEPENDS_libjpeg_turbo@
 			--enable-shared \
 			--disable-static \
 			--with-jpeg8 \
-			--mandir=/.remove \
-			--bindir=/.remove \
+			--mandir=$(targetprefix)/.remove \
+			--bindir=$(targetprefix)/.remove \
 			--prefix=/usr \
 			&& \
 		$(MAKE) && \
@@ -323,8 +323,8 @@ $(D)/libjpeg_turbo: $(D)/bootstrap @DEPENDS_libjpeg_turbo@
 			--host=$(target) \
 			--enable-shared \
 			--disable-static \
-			--mandir=/.remove \
-			--bindir=/.remove \
+			--mandir=$(targetprefix)/.remove \
+			--bindir=$(targetprefix)/.remove \
 			--prefix=/usr \
 			&& \
 		$(MAKE) && \

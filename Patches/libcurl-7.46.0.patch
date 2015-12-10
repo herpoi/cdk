@@ -13,7 +13,7 @@
 @@ -141,7 +141,7 @@
  bin_SCRIPTS = curl-config
  
- SUBDIRS = lib src include
+ SUBDIRS = lib src include scripts
 -DIST_SUBDIRS = $(SUBDIRS) tests packages docs
 +DIST_SUBDIRS = $(SUBDIRS) packages
  
@@ -21,10 +21,10 @@
  pkgconfig_DATA = libcurl.pc
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -598,7 +598,7 @@
+@@ -601,7 +601,7 @@
  
  bin_SCRIPTS = curl-config
- SUBDIRS = lib src include
+ SUBDIRS = lib src include scripts
 -DIST_SUBDIRS = $(SUBDIRS) tests packages docs
 +DIST_SUBDIRS = $(SUBDIRS) packages
  pkgconfigdir = $(libdir)/pkgconfig

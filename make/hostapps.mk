@@ -60,9 +60,10 @@ $(D)/host_libffi: @DEPENDS_host_libffi@
 #
 # host_glib2_genmarshal
 #
-$(D)/host_glib2_genmarshal: @DEPENDS_host_glib2_genmarshal@
+$(D)/host_glib2_genmarshal: $(D)/host_libffi @DEPENDS_host_glib2_genmarshal@
 	@PREPARE_host_glib2_genmarshal@
 	export PKG_CONFIG=/usr/bin/pkg-config && \
+	export PKG_CONFIG_PATH=$(hostprefix)/lib/pkgconfig && \
 	cd @DIR_host_glib2_genmarshal@ && \
 		./configure \
 			--enable-static=yes \

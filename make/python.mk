@@ -150,6 +150,7 @@ $(D)/python_imaging: $(D)/bootstrap $(D)/libjpeg $(D)/libfreetype $(D)/python $(
 $(D)/python_pycrypto: $(D)/bootstrap $(D)/python $(D)/python_setuptools @DEPENDS_python_pycrypto@
 	@PREPARE_python_pycrypto@
 	cd @DIR_python_pycrypto@ && \
+		export ac_cv_func_malloc_0_nonnull=yes && \
 		$(CONFIGURE) \
 			--prefix=/usr && \
 		$(PYTHON_INSTALL)
