@@ -210,7 +210,6 @@ libdpfax;make:install:DESTDIR=TARGET
 #
 # Security
 #
-openssl_old;rewrite-pkgconfig:libcrypto.pc:libssl.pc:openssl.pc;make:install_sw:INSTALL_PREFIX=TARGET
 openssl;rewrite-pkgconfig:libcrypto.pc:libssl.pc:openssl.pc;make:install_sw:INSTALL_PREFIX=TARGET
 gnutls;rewrite-pkgconfig:lib/gnutls.pc;make:install:DESTDIR=TARGET;rewrite-libtool:TARGET/usr/lib/libgnutls.la:TARGET/usr/lib/libgnutlsxx.la;rewrite-dependency:TARGET/usr/lib/libgnutlsxx.la
 nettle;rewrite-pkgconfig:nettle.pc:hogweed.pc;make:install:DESTDIR=TARGET
@@ -230,6 +229,7 @@ sdparm;make:install:DESTDIR=TARGET
 parted;make:install
 utillinux;rewrite-pkgconfig:libsmartcols/smartcols.pc;make:install:DESTDIR=TARGET;rewrite-libtool:TARGET/usr/lib/libsmartcols.la
 xfsprogs;make:install:prefix=TARGET/usr
+smartmontools;make:install:prefix=TARGET/usr
 
 #
 # Networking Libraries / Networking Utilities

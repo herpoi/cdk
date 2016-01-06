@@ -44,31 +44,13 @@ $(D)/openssl: $(D)/bootstrap @DEPENDS_openssl@
 	@PREPARE_openssl@
 	cd @DIR_openssl@ && \
 		$(BUILDENV) \
-		./Configure -DL_ENDIAN shared no-hw no-engine linux-generic32 \
+		./Configure -DL_ENDIAN shared no-hw linux-generic32 \
 			--prefix=/usr \
 			--openssldir=/etc/ssl \
-			--openssldir=/.remove \
 		&& \
 		$(MAKE) && \
 		@INSTALL_openssl@
 	@CLEANUP_openssl@
-	touch $@
-
-#
-# openssl_old
-#
-$(D)/openssl_old: $(D)/bootstrap @DEPENDS_openssl_old@
-	@PREPARE_openssl_old@
-	cd @DIR_openssl_old@ && \
-		$(BUILDENV) \
-		./Configure shared linux-sh no-hw \
-			--prefix=/usr \
-			--openssldir=/.remove \
-		&& \
-		$(MAKE) depend && \
-		$(MAKE) && \
-		@INSTALL_openssl_old@
-	@CLEANUP_openssl_old@
 	touch $@
 
 #
@@ -919,7 +901,9 @@ if ENABLE_ENIGMA2
 FFMPEG_EXTRA  = --enable-librtmp
 FFMPEG_EXTRA += --enable-protocol=librtmp --enable-protocol=librtmpe --enable-protocol=librtmps --enable-protocol=librtmpt --enable-protocol=librtmpte
 LIBRTMPDUMP = librtmpdump
-else
+endif
+
+if ENABLE_NEUTRINO
 FFMPEG_EXTRA = --disable-iconv
 LIBXML2 = libxml2
 endif
@@ -1072,6 +1056,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @
 			--disable-protocols \
 			--enable-protocol=file \
 			--enable-protocol=http \
+			--enable-protocol=https \
 			--enable-protocol=mmsh \
 			--enable-protocol=mmst \
 			--enable-protocol=rtmp \
@@ -1081,6 +1066,7 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) @
 			--enable-protocol=rtmpte \
 			--enable-protocol=rtmpts \
 			--enable-protocol=rtp \
+			--enable-protocol=rtps \
 			--enable-protocol=tcp \
 			--enable-protocol=udp \
 			\

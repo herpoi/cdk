@@ -985,7 +985,6 @@ TUXBOX_RULES_MAKE(libdpfax)
 #
 # Security
 #
-TUXBOX_RULES_MAKE(openssl_old)
 TUXBOX_RULES_MAKE(openssl)
 TUXBOX_RULES_MAKE(gnutls)
 TUXBOX_RULES_MAKE(nettle)
@@ -1005,6 +1004,7 @@ TUXBOX_RULES_MAKE(parted)
 TUXBOX_RULES_MAKE(sdparm)
 TUXBOX_RULES_MAKE(utillinux)
 TUXBOX_RULES_MAKE(xfsprogs)
+TUXBOX_RULES_MAKE(smartmontools)
 
 #
 # Networking Libraries / Networking Utilities

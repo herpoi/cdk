@@ -248,8 +248,7 @@ libdpfax;ax;dpf-ax;dpf-ax.svn;extract:dpf-ax.svn
 #
 # Security
 #
-openssl_old;0.9.8zf;openssl-0.9.8zf;openssl-0.9.8zf.tar.gz;extract:openssl-0.9.8zf.tar.gz;patch:openssl-0.9.8.patch;patch:openssl-0.9.8-parallel-build.patch
-openssl;1.0.2d;openssl-1.0.2d;openssl-1.0.2d.tar.gz;extract:openssl-1.0.2d.tar.gz;patch:openssl-1.0.2.patch
+openssl;1.0.2e;openssl-1.0.2e;openssl-1.0.2e.tar.gz;extract:openssl-1.0.2e.tar.gz;patch:openssl-1.0.2.patch
 gnutls;3.4.3;gnutls-3.4.3;gnutls-3.4.3.tar.xz;extract:gnutls-3.4.3.tar.xz
 nettle;3.1;nettle-3.1;nettle-3.1.tar.gz;extract:nettle-3.1.tar.gz
 
@@ -268,6 +267,7 @@ sdparm;1.07;sdparm-1.07;sdparm-1.07.tgz;extract:sdparm-1.07.tgz
 parted;3.0;parted-3.0;parted-3.0.tar.gz;extract:parted-3.0.tar.gz
 utillinux;2.25.2;util-linux-2.25.2;util-linux-2.25.2.tar.gz;extract:util-linux-2.25.2.tar.gz
 xfsprogs;3.1.8;xfsprogs-3.1.8;xfsprogs-3.1.8.tar.gz;extract:xfsprogs-3.1.8.tar.gz
+smartmontools;6.4;smartmontools-6.4;smartmontools-6.4.tar.gz;extract:smartmontools-6.4.tar.gz
 
 #
 # Networking Libraries / Networking Utilities

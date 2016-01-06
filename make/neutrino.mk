@@ -153,6 +153,7 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--enable-ffmpegdec \
 			--enable-giflib \
 			--with-tremor \
+			--enable-lua \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
@@ -371,6 +372,12 @@ neutrino-mp-next-distclean:
 	rm -f $(D)/neutrino-mp-next*
 
 ################################################################################
+neutrino-cdkroot-clean:
+	[ -e $(targetprefix)/usr/local/bin ] && cd $(targetprefix)/usr/local/bin && find -name '*' -delete || true
+	[ -e $(targetprefix)/usr/local/share/iso-codes ] && cd $(targetprefix)/usr/local/share/iso-codes && find -name '*' -delete || true
+	[ -e $(targetprefix)/usr/share/tuxbox/neutrino ] && cd $(targetprefix)/usr/share/tuxbox/neutrino && find -name '*' -delete || true
+	[ -e $(targetprefix)/usr/share/fonts ] && cd $(targetprefix)/usr/share/fonts && find -name '*' -delete || true
+################################################################################
 #
 # yaud-neutrino-hd2-exp
 #
@@ -378,27 +385,35 @@ yaud-neutrino-hd2-exp: yaud-none lirc \
 		boot-elf neutrino-hd2-exp release_neutrino
 	@TUXBOX_YAUD_CUSTOMIZE@
 
+if BOXTYPE_SPARK
+NHD2_OPTS = --enable-4digits
+else
+if BOXTYPE_SPARK7162
+NHD2_OPTS = 
+else
+NHD2_OPTS = --enable-ci
+endif
+endif
+
 #
 # neutrino-hd2-exp
 #
 NEUTRINO_HD2_PATCHES =
 
-$(D)/neutrino-hd2-exp.do_prepare: | $(NEUTRINO_DEPS) $(NEUTRINO_DEPS2) $(MEDIAFW_DEP) libflac
+$(D)/neutrino-hd2-exp.do_prepare: | $(NEUTRINO_DEPS) $(NEUTRINO_DEPS2) libflac
 	rm -rf $(sourcedir)/nhd2-exp
-	rm -rf $(sourcedir)/nhd2-exp.org
-	[ -d "$(archivedir)/neutrino-hd2-exp.svn" ] && \
-	(cd $(archivedir)/neutrino-hd2-exp.svn; svn up ; cd "$(buildprefix)";); \
-	[ -d "$(archivedir)/neutrino-hd2-exp.svn" ] || \
-	svn co http://neutrinohd2.googlecode.com/svn/branches/nhd2-exp $(archivedir)/neutrino-hd2-exp.svn; \
-	cp -ra $(archivedir)/neutrino-hd2-exp.svn $(sourcedir)/nhd2-exp; \
-	cp -ra $(sourcedir)/nhd2-exp $(sourcedir)/nhd2-exp.org
+	[ -d "$(archivedir)/neutrino-hd2-exp.git" ] && \
+	(cd $(archivedir)/neutrino-hd2-exp.git; git pull; cd "$(buildprefix)";); \
+	[ -d "$(archivedir)/neutrino-hd2-exp.git" ] || \
+	git clone -b nhd2-exp https://github.com/mohousch/neutrinohd2.git $(archivedir)/neutrino-hd2-exp.git; \
+	cp -ra $(archivedir)/neutrino-hd2-exp.git $(sourcedir)/nhd2-exp;
 	for i in $(NEUTRINO_HD2_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(sourcedir)/nhd2-exp && patch -p1 -i $$i; \
 	done;
 	touch $@
 
-$(sourcedir)/nhd2-exp/config.status:
+$(D)/neutrino-hd2-exp.config.status:
 	cd $(sourcedir)/nhd2-exp && \
 		./autogen.sh && \
 		$(BUILDENV) \
@@ -407,21 +422,19 @@ $(sourcedir)/nhd2-exp/config.status:
 			--host=$(target) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
 			--with-configdir=/var/tuxbox/config \
 			--with-gamesdir=/var/tuxbox/games \
 			--with-plugindir=/var/tuxbox/plugins \
 			--with-isocodesdir=/usr/share/iso-codes \
-			--enable-standaloneplugins \
-			--enable-radiotext \
-			--enable-upnp \
+			$(NHD2_OPTS) \
 			--enable-scart \
-			--enable-ci \
 			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
 			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
 			CPPFLAGS="$(N_CPPFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
+	touch $@
+
 
 $(D)/neutrino-hd2-exp: neutrino-hd2-exp.do_prepare neutrino-hd2-exp.do_compile
 	$(MAKE) -C $(sourcedir)/nhd2-exp install DESTDIR=$(targetprefix) && \
@@ -432,20 +445,23 @@ $(D)/neutrino-hd2-exp: neutrino-hd2-exp.do_prepare neutrino-hd2-exp.do_compile
 	$(target)-strip $(targetprefix)/usr/local/bin/sectionsdcontrol
 	touch $@
 
-$(D)/neutrino-hd2-exp.do_compile: $(sourcedir)/nhd2-exp/config.status
+$(D)/neutrino-hd2-exp.do_compile: neutrino-hd2-exp.config.status
 	cd $(sourcedir)/nhd2-exp && \
 		$(MAKE) all
 	touch $@
 
-neutrino-hd2-exp-clean:
+neutrino-hd2-exp-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-hd2-exp
+	rm -f $(D)/neutrino-hd2-exp.config.status
 	cd $(sourcedir)/nhd2-exp && \
 		$(MAKE) clean
 
-neutrino-hd2-exp-distclean:
-	rm -f $(D)/neutrino-hd2-exp
-	rm -f $(D)/neutrino-hd2-exp.do_compile
-	rm -f $(D)/neutrino-hd2-exp.do_prepare
+neutrino-hd2-exp-distclean: neutrino-cdkroot-clean
+	rm -f $(D)/neutrino-hd2-exp*
+
+nhd2-distclean: neutrino-cdkroot-clean
+	rm -f $(D)/neutrino-hd2-exp*
+	rm -f $(D)/nhd2-plugins*
 
 ################################################################################
 #

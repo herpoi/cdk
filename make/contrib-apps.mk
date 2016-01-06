@@ -779,3 +779,18 @@ $(D)/wget: $(D)/bootstrap $(D)/openssl @DEPENDS_wget@
 		@INSTALL_wget@
 	@CLEANUP_wget@
 	touch $@
+
+#
+# smartmontools
+#
+$(D)/smartmontools: $(D)/bootstrap @DEPENDS_smartmontools@
+	@PREPARE_smartmontools@
+	cd @DIR_smartmontools@ && \
+		$(CONFIGURE) \
+			--prefix=/usr \
+		&& \
+		$(MAKE) && \
+		@INSTALL_smartmontools@
+	@CLEANUP_smartmontools@
+	touch $@
+

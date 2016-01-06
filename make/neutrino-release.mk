@@ -971,10 +971,13 @@ endif
 #
 # Plugins
 #
-	if [ -e $(targetprefix)/var/tuxbox/plugins/libfx2.so ]; then \
-		cp -f $(targetprefix)/var/tuxbox/plugins/*.so $(prefix)/release/var/tuxbox/plugins; \
-		cp -f $(targetprefix)/var/tuxbox/plugins/*.cfg $(prefix)/release/var/tuxbox/plugins; \
-		cp -af $(targetprefix)/bin/{shellexec,msgbox,getrc,input} $(prefix)/release/bin; \
+#	if [ -e $(targetprefix)/var/tuxbox/plugins/libfx2.so ]; then \
+#		cp -f $(targetprefix)/var/tuxbox/plugins/*.so $(prefix)/release/var/tuxbox/plugins;
+#		cp -f $(targetprefix)/var/tuxbox/plugins/*.cfg $(prefix)/release/var/tuxbox/plugins;
+#		cp -af $(targetprefix)/bin/{shellexec,msgbox,getrc,input} $(prefix)/release/bin;
+#	fi
+	if [ -d $(targetprefix)/var/tuxbox/plugins ]; then \
+		cp -af $(targetprefix)/var/tuxbox/plugins $(prefix)/release/var/tuxbox/; \
 	fi
 	if [ -e $(prefix)/release/var/tuxbox/plugins/tuxwetter.so ]; then \
 		cp -rf $(targetprefix)/var/tuxbox/config/tuxwetter $(prefix)/release/var/tuxbox/config; \
@@ -984,9 +987,10 @@ endif
 		ln -s /var/tuxbox/plugins/sokoban $(prefix)/release/usr/share/tuxbox/sokoban; \
 	fi
 
-	if [ -e $(targetprefix)/var/tuxbox/plugins/tuxcom.so -a -e $(targetprefix)/var/tuxbox/plugins/tuxcom.cfg ]; then \
-		cp -f $(targetprefix)/var/tuxbox/plugins/tuxcom* $(prefix)/release/var/tuxbox/plugins; \
-	fi
+#	if [ -e $(targetprefix)/var/tuxbox/plugins/tuxcom.so -a -e $(targetprefix)/var/tuxbox/plugins/tuxcom.cfg ]; then
+#		cp -f $(targetprefix)/var/tuxbox/plugins/tuxcom* $(prefix)/release/var/tuxbox/plugins;
+#	fi
+#
 
 #
 # shairport

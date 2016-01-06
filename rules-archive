@@ -226,8 +226,7 @@ dpf-ax.svn;svn://svn.code.sf.net/p/dpf-ax/code/trunk
 #
 # Security
 #
-openssl-0.9.8zf.tar.gz;ftp://ftp.openssl.org/source
-openssl-1.0.2d.tar.gz;ftp://ftp.openssl.org/source
+openssl-1.0.2e.tar.gz;ftp://ftp.openssl.org/source
 gnutls-3.4.3.tar.xz;ftp://ftp.gnutls.org/gcrypt/gnutls/v3.4
 nettle-3.1.tar.gz;https://ftp.gnu.org/gnu/nettle
 
@@ -246,6 +245,7 @@ sdparm-1.07.tgz;http://sg.danny.cz/sg/p
 parted-3.0.tar.gz;http://ftp.gnu.org/pub/gnu/parted
 util-linux-2.25.2.tar.gz;http://ftp.kernel.org/pub/linux/utils/util-linux/v2.25
 xfsprogs-3.1.8.tar.gz;http://ftp.gwdg.de/pub/linux/misc/xfs/xfs/cmd_tars
+smartmontools-6.4.tar.gz;http://sourceforge.net/projects/smartmontools/files/smartmontools/6.4
 
 #
 # Networking Libraries / Networking Utilities
