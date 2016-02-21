@@ -42,6 +42,7 @@ jpegsrc.v8d.tar.gz;http://www.ijg.org/files
 libjpeg-turbo-1.4.2.tar.gz;http://sourceforge.net/projects/libjpeg-turbo/files/1.4.2
 libpng-1.2.50.tar.bz2;http://sourceforge.net/projects/libpng/files/libpng12/1.2.50
 libpng-1.6.20.tar.gz;http://sourceforge.net/projects/libpng/files/libpng16/1.6.20
+png++-0.2.9.tar.gz;http://download.savannah.gnu.org/releases/pngpp
 tiff-4.0.3.tar.gz;http://download.osgeo.org/libtiff
 pixman-0.18.0.tar.gz;http://cairographics.org/releases
 
@@ -226,7 +227,7 @@ dpf-ax.svn;svn://svn.code.sf.net/p/dpf-ax/code/trunk
 #
 # Security
 #
-openssl-1.0.2e.tar.gz;ftp://ftp.openssl.org/source
+openssl-1.0.2f.tar.gz;ftp://ftp.openssl.org/source
 gnutls-3.4.3.tar.xz;ftp://ftp.gnutls.org/gcrypt/gnutls/v3.4
 nettle-3.1.tar.gz;https://ftp.gnu.org/gnu/nettle
 

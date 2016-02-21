@@ -57,6 +57,7 @@ libjpeg;8d;jpeg-8d;jpegsrc.v8d.tar.gz:jpeg.patch;extract:jpegsrc.v8d.tar.gz;patc
 libjpeg_turbo;1.4.2;libjpeg-turbo-1.4.2;libjpeg-turbo-1.4.2.tar.gz;extract:libjpeg-turbo-1.4.2.tar.gz
 libpng12;1.2.50;libpng-1.2.50;libpng-1.2.50.tar.bz2;extract:libpng-1.2.50.tar.bz2
 libpng;1.6.20;libpng-1.6.20;libpng-1.6.20.tar.gz;extract:libpng-1.6.20.tar.gz
+pngpp;0.2.9;png++-0.2.9;png++-0.2.9.tar.gz;extract:png++-0.2.9.tar.gz
 libtiff;4.0.3;tiff-4.0.3;tiff-4.0.3.tar.gz;extract:tiff-4.0.3.tar.gz
 pixman;0.18.0;pixman-0.18.0;pixman-0.18.0.tar.gz;extract:pixman-0.18.0.tar.gz
 
@@ -248,7 +249,7 @@ libdpfax;ax;dpf-ax;dpf-ax.svn;extract:dpf-ax.svn
 #
 # Security
 #
-openssl;1.0.2e;openssl-1.0.2e;openssl-1.0.2e.tar.gz;extract:openssl-1.0.2e.tar.gz;patch:openssl-1.0.2.patch
+openssl;1.0.2f;openssl-1.0.2f;openssl-1.0.2f.tar.gz;extract:openssl-1.0.2f.tar.gz;patch:openssl-1.0.2.patch
 gnutls;3.4.3;gnutls-3.4.3;gnutls-3.4.3.tar.xz;extract:gnutls-3.4.3.tar.xz
 nettle;3.1;nettle-3.1;nettle-3.1.tar.gz;extract:nettle-3.1.tar.gz
 

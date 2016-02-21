@@ -347,6 +347,16 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib @DEPENDS_libpng@
 	touch $@
 
 #
+# pngpp
+#
+$(D)/pngpp: $(D)/bootstrap $(D)/libpng @DEPENDS_pngpp@
+	@PREPARE_pngpp@
+	cd @DIR_pngpp@ && \
+		@INSTALL_pngpp@
+	@CLEANUP_pngpp@
+	touch $@
+
+#
 # libungif
 #
 $(D)/libungif: $(D)/bootstrap @DEPENDS_libungif@

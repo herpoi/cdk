@@ -823,6 +823,9 @@ endif
 	cp $(targetprefix)/usr/local/bin/neutrino $(prefix)/release/usr/local/bin/
 	cp $(targetprefix)/usr/local/bin/pzapit $(prefix)/release/usr/local/bin/
 	cp $(targetprefix)/usr/local/bin/sectionsdcontrol $(prefix)/release/usr/local/bin/
+	if [ -e $(targetprefix)/usr/local/bin/install.sh ]; then \
+		cp -aR $(targetprefix)/usr/local/bin/install.sh $(prefix)/release/bin/; \
+	fi
 	if [ -e $(targetprefix)/usr/local/bin/luaclient ]; then \
 		cp $(targetprefix)/usr/local/bin/luaclient $(prefix)/release/bin/; \
 	fi
@@ -1027,7 +1030,7 @@ endif
 	rm -rf $(prefix)/release/usr/lib/m4-nofpu/
 	rm -f $(prefix)/release/lib/modules/lzo*.ko
 	rm -rf $(prefix)/release/lib/modules/$(KERNELVERSION)
-	rm -rf $(prefix)/release/usr/lib/alsa-lib
+	rm -rf $(prefix)/release/usr/lib/alsa
 	rm -rf $(prefix)/release/usr/lib/alsaplayer
 	rm -rf $(prefix)/release/usr/lib/audit
 	rm -f $(prefix)/release/usr/lib/libc.so
