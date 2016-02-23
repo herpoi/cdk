@@ -73,8 +73,8 @@ $(D)/enigma2-pli-nightly.do_prepare_backup: | $(ENIGMA2_DEPS)
 
 $(D)/enigma2-pli-nightly.do_prepare: | $(ENIGMA2_DEPS)
 	REVISION=""; \
-	BRANCH="trunk"; \
-	REPO="git@bitbucket.org:herpoi/graterliaos-openpli.git"; \
+	BRANCH="master"; \
+	REPO="https://github.com/herpoi/GraterliaOS-OpenPLi.git"; \
 	rm -rf $(sourcedir)/enigma2-nightly; \
 	rm -rf $(sourcedir)/enigma2-nightly.org; \
 	[ -d "$(archivedir)/enigma2-pli-nightly.git" ] && \
