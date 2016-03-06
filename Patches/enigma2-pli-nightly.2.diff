@@ -8523,3 +8523,30 @@ diff -Nur '--exclude-from=/home/max/Duckbox-Developers/cdk/scripts/diff-exclude'
  		if not config.misc.useTransponderTime.value:
  			print "dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime))
  			setRTCtime(nowTime)
+diff -Nur enigma2-nightly.org/lib/gdi/picload.cpp enigma2-nightly/lib/gdi/picload.cpp
+--- enigma2-nightly.org/lib/gdi/picload.cpp
++++ enigma2-nightly/lib/gdi/picload.cpp
+@@ -477,8 +477,9 @@
+ 	ColorMapObject *cmap;
+ 	int cmaps;
+ 	int extcode;
++	int GifLastError; 
+ 
+-	gft = DGifOpenFileName(filepara->file);
++	gft = DGifOpenFileName(filepara->file, &GifLastError); 
+ 	if (gft == NULL)
+ 		return;
+ 	do
+@@ -569,10 +569,10 @@
+ 	}
+ 	while (rt != TERMINATE_RECORD_TYPE);
+ 
+-	DGifCloseFile(gft);
++	DGifCloseFile(gft, &GifLastError);
+ 	return;
+ ERROR_R:
+ 	eDebug("[ePicLoad] <Error gif>");
+-	DGifCloseFile(gft);
++	DGifCloseFile(gft, &GifLastError);
+ }
+ 

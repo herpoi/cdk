@@ -36,7 +36,7 @@ freetype-2.6.1.tar.bz2;http://prdownloads.sourceforge.net/sourceforge/freetype
 fontconfig-2.8.0.tar.gz;http://www.freedesktop.org/software/fontconfig/release
 fribidi-0.19.7.tar.bz2;http://fribidi.org/download
 giflib-4.1.6.tar.bz2;http://heanet.dl.sourceforge.net/sourceforge/giflib
-giflib-5.0.6.tar.bz2;http://downloads.sourceforge.net/project/giflib
+giflib-5.1.2.tar.bz2;http://downloads.sourceforge.net/project/giflib
 libungif-4.1.4.tar.bz2;http://heanet.dl.sourceforge.net/sourceforge/giflib
 jpegsrc.v8d.tar.gz;http://www.ijg.org/files
 libjpeg-turbo-1.4.2.tar.gz;http://sourceforge.net/projects/libjpeg-turbo/files/1.4.2

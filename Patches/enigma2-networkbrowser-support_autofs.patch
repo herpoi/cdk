@@ -78,16 +78,17 @@
  
  		self.getAutoMountPoints()
  
-@@ -43,7 +38,7 @@
- 
- 		if not os.path.exists(XML_FSTAB):
- 			return
--		tree = cet_parse(XML_FSTAB).getroot()
-+		tree = open(XML_FSTAB, "r").read()
- 
- 		def getValue(definitions, default):
- 			# Initialize Output
-@@ -52,41 +47,55 @@
+@@ -44,8 +44,8 @@
+		if not os.path.exists(XML_FSTAB):
+			return
+
+		try:
+-			tree = cet_parse(XML_FSTAB).getroot()
++			tree = open(XML_FSTAB, "r").read()
+ 		except Exception, e:
+ 			print "[MountManager] Error reading /etc/enigma2/automounts.xml:", e
+ 			try:
+@@ -56,41 +56,55 @@
  			Len = len(definitions)
  			return Len > 0 and definitions[Len-1].text or default
  		# Config is stored in "mountmanager" element
@@ -174,7 +175,7 @@
  					self.automounts[data['sharename']] = data
  				except Exception, e:
  					print "[MountManager] Error reading Mounts:", e
-@@ -94,11 +103,12 @@
+@@ -112,11 +112,12 @@
  		self.checkList = self.automounts.keys()
  		if not self.checkList:
  			print "[AutoMount.py] self.automounts without mounts",self.automounts
@@ -189,7 +190,7 @@
  	def sanitizeOptions(self, origOptions, cifs=False):
  		options = origOptions.strip()
  		if not options:
-@@ -116,78 +126,21 @@
+@@ -135,78 +135,21 @@
  
  	def CheckMountPoint(self, item, callback):
  		data = self.automounts[item]
@@ -275,7 +276,7 @@
  
  	def makeHDDlink(self, path):
  		hdd_dir = '/media/hdd'
-@@ -210,13 +163,6 @@
+@@ -172,13 +172,6 @@
  			except Exception, ex:
  				print "[AutoMount.py] Failed to create ", movie, "Error:", ex
  
@@ -289,7 +290,7 @@
  
  	def getMountsList(self):
  		return self.automounts
-@@ -233,27 +179,31 @@
+@@ -188,27 +188,31 @@
  
  	def writeMountsConfig(self):
  		# Generate List in RAM
@@ -339,7 +340,7 @@
  
  		# Try Saving to Flash
  		try:
-@@ -261,9 +211,6 @@
+@@ -220,9 +220,6 @@
  		except Exception, e:
  			print "[AutoMount.py] Error Saving Mounts List:", e
  
@@ -349,7 +350,7 @@
  
  	def removeMount(self, mountpoint, callback = None):
  		print "[AutoMount.py] removing mount: ",mountpoint
-@@ -273,28 +220,6 @@
+@@ -229,28 +229,6 @@
  				self.newautomounts[sharename] = sharedata
  		self.automounts.clear()
  		self.automounts = self.newautomounts
