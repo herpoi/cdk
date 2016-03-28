@@ -130,6 +130,7 @@ $(D)/gst_plugins_bad: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_base libmod
 			--disable-wildmidi \
 			--disable-wininet \
 			--disable-winscreencap \
+			--disable-x265 \
 			--disable-zbar \
 			--disable-examples \
 			--disable-debug \
