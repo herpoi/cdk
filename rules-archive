@@ -165,9 +165,9 @@ elementtree-1.2.6-20050316.tar.gz;http://effbot.org/media/downloads
 lxml-2.2.8.tgz;http://launchpad.net/lxml/2.2/2.2.8/+download
 libxmlccwrap-0.0.12.tar.gz;http://www.ant.uni-bremen.de/whomes/rinas/libxmlccwrap/download
 setuptools-5.2.tar.gz;http://pypi.python.org/packages/source/s/setuptools
-Twisted-13.2.0.tar.bz2;http://twistedmatrix.com/Releases/Twisted/13.2
+Twisted-16.0.0.tar.bz2;http://pypi.python.org/packages/source/T/Twisted
 Imaging-1.1.7.tar.gz;http://effbot.org/downloads
-pycrypto-2.5.tar.gz;http://pypi.python.org/packages/source/p/pycrypto
+pycrypto-2.6.1.tar.gz;http://pypi.python.org/packages/source/p/pycrypto
 pyOpenSSL-0.13.1.tar.gz;http://pypi.python.org/packages/source/p/pyOpenSSL
 pyusb-1.0.0a3.tar.gz;http://pypi.python.org/packages/source/p/pyusb
 python-wifi-0.5.0.tar.bz2;http://freefr.dl.sourceforge.net/project/pythonwifi.berlios

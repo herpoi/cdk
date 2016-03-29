@@ -182,9 +182,9 @@ python_gdata;2.0.18;gdata-2.0.18;gdata-2.0.18.tar.gz;extract:gdata-2.0.18.tar.gz
 python_elementtree;1.2.6-20050316;elementtree-1.2.6-20050316;elementtree-1.2.6-20050316.tar.gz;extract:elementtree-1.2.6-20050316.tar.gz
 python_lxml;2.2.8;lxml-2.2.8;lxml-2.2.8.tgz;extract:lxml-2.2.8.tgz
 python_setuptools;5.2;setuptools-5.2;setuptools-5.2.tar.gz;extract:setuptools-5.2.tar.gz
-python_twisted;13.2.0;Twisted-13.2.0;Twisted-13.2.0.tar.bz2;extract:Twisted-13.2.0.tar.bz2
+python_twisted;16.0.0;Twisted-16.0.0;Twisted-16.0.0.tar.bz2;extract:Twisted-16.0.0.tar.bz2
 python_imaging;1.1.7;Imaging-1.1.7;Imaging-1.1.7.tar.gz;extract:Imaging-1.1.7.tar.gz;patch:python-imaging-1.1.7-crosscompiling.patch
-python_pycrypto;2.5;pycrypto-2.5;pycrypto-2.5.tar.gz;extract:pycrypto-2.5.tar.gz;patch:python-pycrypto-no-usr-include.patch
+python_pycrypto;2.6.1;pycrypto-2.6.1;pycrypto-2.6.1.tar.gz;extract:pycrypto-2.6.1.tar.gz;patch:python-pycrypto-no-usr-include.patch
 python_pyopenssl;0.13.1;pyOpenSSL-0.13.1;pyOpenSSL-0.13.1.tar.gz;extract:pyOpenSSL-0.13.1.tar.gz;patch:python_pyopenssl_x509_revoked_dup.patch
 python_pyusb;1.0.0a3;pyusb-1.0.0a3;pyusb-1.0.0a3.tar.gz;extract:pyusb-1.0.0a3.tar.gz
 python_wifi;0.5.0;python-wifi-0.5.0;python-wifi-0.5.0.tar.bz2;extract:python-wifi-0.5.0.tar.bz2
