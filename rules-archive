@@ -199,7 +199,7 @@ gst-plugins-good-1.8.0.tar.xz;http://gstreamer.freedesktop.org/src/gst-plugins-g
 gst-plugins-bad-1.8.0.tar.xz;http://gstreamer.freedesktop.org/src/gst-plugins-bad
 gst-plugins-ugly-1.8.0.tar.xz;http://gstreamer.freedesktop.org/src/gst-plugins-ugly
 gst-fluendo-mpegdemux-0.10.71.tar.gz;http://core.fluendo.com/gstreamer/src/gst-fluendo-mpegdemux
-gst-libav-1.8.9.tar.xz;http://gstreamer.freedesktop.org/src/gst-libav
+gst-libav-1.8.0.tar.xz;http://gstreamer.freedesktop.org/src/gst-libav
 gst-plugin-subsink.git;git://github.com/christophecvr/gstreamer1.0-plugin-subsink.git
 
 #
