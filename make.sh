@@ -166,9 +166,9 @@ esac
 case $2 in
 	[1-5]) REPLY=$2;;
 	*)	echo -e "\nKernel:"
-		echo "   1) STM 24 P0209"
-		echo "   2) STM 24 P0211"
-		echo "   3) STM 24 P0214"
+		echo "   1) STM 24 P0209 (outdated)"
+		echo "   2) STM 24 P0211 (outdated)"
+		echo "   3) STM 24 P0214 (outdated)"
 		echo "   4) STM 24 P0215"
 		echo "   5) STM 24 P0217 (recommended)"
 		read -p "Select kernel (1-5)? ";;

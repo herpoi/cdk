@@ -19,15 +19,15 @@ while ( <RULES> )
     $output .= "mkdir -p \$(archivedir) && ( \\\n\t";
     if ( $url =~ m#^ftp://# )
     {
-      $output .= "wget -c --passive-ftp -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
+      $output .= "wget -c --no-check-certificate --passive-ftp -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
     }
     elsif ( $url =~ m#^http://# )
     {
-      $output .= "wget -t 2 -T 10 -c -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
+      $output .= "wget -t 2 -T 10 -c --no-check-certificate -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
     }
     elsif ( $url =~ m#^https://# )
     {
-      $output .= "wget -t 2 -T 10 -c -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
+      $output .= "wget -t 2 -T 10 -c --no-check-certificate -P \$(archivedir) " . $url . "/" . $file . " || \\\n\t";
     }
     elsif ( $url =~ m#^cvs://# )
     {

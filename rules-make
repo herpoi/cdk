@@ -56,7 +56,7 @@ libungif;4.1.4;libungif-4.1.4;libungif-4.1.4.tar.bz2;extract:libungif-4.1.4.tar.
 libjpeg;8d;jpeg-8d;jpegsrc.v8d.tar.gz:jpeg.patch;extract:jpegsrc.v8d.tar.gz;patch:jpeg.patch
 libjpeg_turbo;1.4.2;libjpeg-turbo-1.4.2;libjpeg-turbo-1.4.2.tar.gz;extract:libjpeg-turbo-1.4.2.tar.gz
 libpng12;1.2.50;libpng-1.2.50;libpng-1.2.50.tar.bz2;extract:libpng-1.2.50.tar.bz2
-libpng;1.6.20;libpng-1.6.20;libpng-1.6.20.tar.gz;extract:libpng-1.6.20.tar.gz
+libpng;1.6.21;libpng-1.6.21;libpng-1.6.21.tar.gz;extract:libpng-1.6.21.tar.gz
 pngpp;0.2.9;png++-0.2.9;png++-0.2.9.tar.gz;extract:png++-0.2.9.tar.gz
 libtiff;4.0.3;tiff-4.0.3;tiff-4.0.3.tar.gz;extract:tiff-4.0.3.tar.gz
 pixman;0.18.0;pixman-0.18.0;pixman-0.18.0.tar.gz;extract:pixman-0.18.0.tar.gz
@@ -88,7 +88,7 @@ libdca;0.0.5;libdca-0.0.5;libdca-0.0.5.tar.bz2;extract:libdca-0.0.5.tar.bz2
 #
 libncurses;5.9;ncurses-5.9;ncurses-5.9.tar.gz;extract:ncurses-5.9.tar.gz
 gmp;6.0.0a;gmp-6.0.0;gmp-6.0.0a.tar.xz;extract:gmp-6.0.0a.tar.xz
-lua;5.2.3;lua-5.2.3;lua-5.2.3.tar.gz;extract:lua-5.2.3.tar.gz;patch:lua-5.2.3-luaposix-31.patch
+lua;5.2.4;lua-5.2.4;lua-5.2.4.tar.gz;extract:lua-5.2.4.tar.gz;patch:lua-5.2.4-luaposix-31.patch
 luacurl;v3;luacurl-v3;luacurl.git;extract:luacurl.git
 luaexpat;1.3.0;luaexpat-1.3.0;luaexpat-1.3.0.tar.gz;extract:luaexpat-1.3.0.tar.gz;patch:luaexpat-1.3.0.patch
 howl;1.0.0;howl-1.0.0;howl-1.0.0.tar.gz;extract:howl-1.0.0.tar.gz
@@ -187,7 +187,7 @@ python_imaging;1.1.7;Imaging-1.1.7;Imaging-1.1.7.tar.gz;extract:Imaging-1.1.7.ta
 python_pycrypto;2.6.1;pycrypto-2.6.1;pycrypto-2.6.1.tar.gz;extract:pycrypto-2.6.1.tar.gz;patch:python-pycrypto-no-usr-include.patch
 python_pyopenssl;0.13.1;pyOpenSSL-0.13.1;pyOpenSSL-0.13.1.tar.gz;extract:pyOpenSSL-0.13.1.tar.gz;patch:python_pyopenssl_x509_revoked_dup.patch
 python_pyusb;1.0.0a3;pyusb-1.0.0a3;pyusb-1.0.0a3.tar.gz;extract:pyusb-1.0.0a3.tar.gz
-python_wifi;0.5.0;python-wifi-0.5.0;python-wifi-0.5.0.tar.bz2;extract:python-wifi-0.5.0.tar.bz2
+python_wifi;0.6.1;python-wifi-0.6.1;python-wifi-0.6.1.tar.bz2;extract:python-wifi-0.6.1.tar.bz2
 python_cheetah;2.4.4;Cheetah-2.4.4;Cheetah-2.4.4.tar.gz;extract:Cheetah-2.4.4.tar.gz
 python_mechanize;0.2.5;mechanize-0.2.5;mechanize-0.2.5.tar.gz;extract:mechanize-0.2.5.tar.gz
 python_zope_interface;4.1.1;zope.interface-4.1.1;zope.interface-4.1.1.tar.gz;extract:zope.interface-4.1.1.tar.gz
@@ -214,7 +214,6 @@ gst_plugins_dvbmediasink;1.0;gst-plugins-dvbmediasink-1.0;gst-plugins-dvbmediasi
 gstreamer;1.8.0;gstreamer-1.8.0;gstreamer-1.8.0.tar.xz;extract:gstreamer-1.8.0.tar.xz;patch:gstreamer-1.0-fix-crash-with-gst-inspect.patch;patch:gstreamer-1.0-revert-use-new-gst-adapter-get-buffer.patch
 gst_plugins_base;1.8.0;gst-plugins-base-1.8.0;gst-plugins-base-1.8.0.tar.xz;extract:gst-plugins-base-1.8.0.tar.xz;patch:gst-1.0-plugins-base-get-caps-from-src-pad-when-query-caps.patch;patch:gst-1.0-plugins-base-riff-media-added-fourcc-to-all-mpeg4-video-caps.patch;patch:gst-1.0-plugins-base-riff-media-added-fourcc-to-all-ffmpeg-mpeg4-video-ca.patch;patch:gst-1.0-plugins-base-subparse-avoid-false-negatives-dealing-with-UTF-8.patch;patch:gst-1.0-plugins-base-taglist-not-send-to-down-stream-if-all-the-frame-cor.patch
 gst_plugins_good;1.8.0;gst-plugins-good-1.8.0;gst-plugins-good-1.8.0.tar.xz;extract:gst-plugins-good-1.8.0.tar.xz;patch:gst-1.0-plugins-good-gstrtpmp4gpay-set-dafault-value-for-MPEG4-without-co.patch
-#gst_plugins_bad;1.8.0;gst-plugins-bad-1.8.0;gst-plugins-bad-1.8.0.tar.xz;extract:gst-plugins-bad-1.8.0.tar.xz;patch:gst-1.0-plugins-bad-fix-compile-error.patch;patch:gst-1.0-plugins-bad-dvbapi5-fix-old-kernel.patch;patch:gst-1.0-plugins-bad-rtmp-fix-seeking-and-potential-segfault.patch
 gst_plugins_bad;1.8.0;gst-plugins-bad-1.8.0;gst-plugins-bad-1.8.0.tar.xz;extract:gst-plugins-bad-1.8.0.tar.xz;patch:gst-1.0-plugins-bad-fix-compile-error.patch;patch:gst-1.0-plugins-bad-rtmp-fix-seeking-and-potential-segfault.patch
 gst_plugins_ugly;1.8.0;gst-plugins-ugly-1.8.0;gst-plugins-ugly-1.8.0.tar.xz;extract:gst-plugins-ugly-1.8.0.tar.xz
 gst_libav;1.8.0;gst-libav-1.8.0;gst-libav-1.8.0.tar.xz;extract:gst-libav-1.8.0.tar.xz;patch:gst-1.0-libav-disable-yasm-for-libav-when-disable-yasm.patch
@@ -275,7 +274,7 @@ smartmontools;6.4;smartmontools-6.4;smartmontools-6.4.tar.gz;extract:smartmontoo
 # Networking Libraries / Networking Utilities
 #
 autofs;4.1.4;autofs-4.1.4;autofs-4.1.4.tar.gz;extract:autofs-4.1.4.tar.gz;patch:autofs-4.1.4.patch
-libcurl;7.46.0;curl-7.46.0;curl-7.46.0.tar.bz2;extract:curl-7.46.0.tar.bz2;patch:libcurl-7.46.0.patch
+libcurl;7.48.0;curl-7.48.0;curl-7.48.0.tar.bz2;extract:curl-7.48.0.tar.bz2;patch:libcurl-7.48.0.patch
 portmap;6.0.0;portmap-6.0.0;portmap_6.0.0.orig.tar.gz:portmap_6.0.patch:portmap_6.0.0-2.diff.gz;extract:portmap_6.0.0.orig.tar.gz;patch:portmap_6.0.patch
 nfs_utils;1.3.3;nfs-utils-1.3.3;nfs-utils-1.3.3.tar.bz2;extract:nfs-utils-1.3.3.tar.bz2;patch:nfs-utils-1.3.3.patch
 libevent;2.0.20-stable;libevent-2.0.20-stable;libevent-2.0.20-stable.tar.gz;extract:libevent-2.0.20-stable.tar.gz
@@ -294,7 +293,7 @@ ethtool;6;ethtool-6;ethtool-6.tar.gz;extract:ethtool-6.tar.gz
 xupnpd;1.0;xupnpd-1.0;xupnpd.git;extract:xupnpd.git;patch:xupnpd.patch
 udpxy;1.0.23-0;udpxy-1.0.23-0;udpxy.1.0.23-0-prod.tar.gz;extract:udpxy.1.0.23-0-prod.tar.gz;patch:udpxy-1.0.23-0.patch
 glibnetworking;2.45.1;glib-networking-2.45.1;glib-networking-2.45.1.tar.xz;extract:glib-networking-2.45.1.tar.xz
-openvpn;2.3.8;openvpn-2.3.8;openvpn-2.3.8.tar.xz;extract:openvpn-2.3.8.tar.xz
+openvpn;2.3.10;openvpn-2.3.10;openvpn-2.3.10.tar.xz;extract:openvpn-2.3.10.tar.xz
 openssh;7.1p1;openssh-7.1p1;openssh-7.1p1.tar.gz;extract:openssh-7.1p1.tar.gz
 
 

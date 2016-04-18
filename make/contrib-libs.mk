@@ -79,7 +79,7 @@ $(D)/lua: $(D)/bootstrap $(D)/libncurses $(archivedir)/luaposix.git @DEPENDS_lua
 		sed -i 's/<config.h>/"config.h"/' src/posix.c; \
 		sed -i '/^#define/d' src/lua52compat.h; \
 		sed -i 's|man/man1|.remove|' Makefile; \
-		$(MAKE) linux CC=$(target)-gcc LDFLAGS="-L$(targetprefix)/usr/lib" BUILDMODE=dynamic PKG_VERSION=5.2.3 && \
+		$(MAKE) linux CC=$(target)-gcc LDFLAGS="-L$(targetprefix)/usr/lib" BUILDMODE=dynamic PKG_VERSION=5.2.4 && \
 		@INSTALL_lua@
 	@CLEANUP_lua@
 	touch $@
@@ -1444,7 +1444,9 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2_e2 @DEPENDS_libxslt@
 $(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb @DEPENDS_graphlcd@
 	@PREPARE_graphlcd@
 	[ -d "$(archivedir)/graphlcd-base-touchcol.git" ] && \
-	(cd $(archivedir)/graphlcd-base-touchcol.git; git pull; git checkout touchcol; cd "$(buildprefix)";); \
+	(cd $(archivedir)/graphlcd-base-touchcol.git; git pull; cd "$(buildprefix)";); \
+	[ -d "$(archivedir)/graphlcd-base-touchcol.git" ] || \
+	git clone -b touchcol git://projects.vdr-developer.org/graphlcd-base.git $(archivedir)/graphlcd-base-touchcol.git; \
 	cd @DIR_graphlcd@ && \
 		export TARGET=$(target)- && \
 		export LDFLAGS="-L$(targetprefix)/usr/lib -Wl,-rpath-link,$(targetprefix)/usr/lib" && \
