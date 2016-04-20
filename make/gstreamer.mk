@@ -277,6 +277,7 @@ $(D)/gst_plugins_dvbmediasink: $(D)/bootstrap $(D)/gstreamer $(D)/gst_plugins_ba
 			--prefix=/usr \
 			--with-wma \
 			--with-wmv \
+			--with-pcm=no \
 			--with-eac3 \
 			--with-dtsdownmix \
 			--with-mpeg4v2 \
