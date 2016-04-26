@@ -20,7 +20,7 @@ endif
 
 NEUTRINO_DEPS2 = libid3tag libmad libvorbisidec
 
-N_CFLAGS  = -Wall -W -Wshadow -g0 -pipe -Os -fno-strict-aliasing -DCPU_FREQ
+N_CFLAGS  = -Wall -W -Wshadow -g0 -pipe -Os -fno-strict-aliasing -DCEC_DISABLED
 
 N_CPPFLAGS = -I$(driverdir)/bpamem
 N_CPPFLAGS += -I$(targetprefix)/usr/include/
@@ -126,12 +126,16 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) libstb-hal-cst-next
 	rm -rf $(sourcedir)/neutrino-mp-cst-next
 	rm -rf $(sourcedir)/neutrino-mp-cst-next.org
 	rm -rf $(N_OBJDIR)
-	[ -d "$(archivedir)/neutrino-mp-cst-next.git" ] && \
-	(cd $(archivedir)/neutrino-mp-cst-next.git; git pull; cd "$(buildprefix)";); \
-	[ -d "$(archivedir)/neutrino-mp-cst-next.git" ] || \
-	git clone https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(archivedir)/neutrino-mp-cst-next.git; \
-	cp -ra $(archivedir)/neutrino-mp-cst-next.git $(sourcedir)/neutrino-mp-cst-next; \
-	cp -ra $(sourcedir)/neutrino-mp-cst-next $(sourcedir)/neutrino-mp-cst-next.org
+	if [ -e $(sourcedir)/neutrino-owned-by-user ]; then \
+		cp -ra $(sourcedir)/neutrino-owned-by-user $(sourcedir)/neutrino-mp-cst-next; \
+	else \
+		[ -d "$(archivedir)/neutrino-mp-cst-next.git" ] && \
+		(cd $(archivedir)/neutrino-mp-cst-next.git; git pull; cd "$(buildprefix)";); \
+		[ -d "$(archivedir)/neutrino-mp-cst-next.git" ] || \
+		git clone https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(archivedir)/neutrino-mp-cst-next.git; \
+		cp -ra $(archivedir)/neutrino-mp-cst-next.git $(sourcedir)/neutrino-mp-cst-next; \
+		cp -ra $(sourcedir)/neutrino-mp-cst-next $(sourcedir)/neutrino-mp-cst-next.org \
+	fi \
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(sourcedir)/neutrino-mp-cst-next && patch -p1 -i $$i; \
@@ -154,12 +158,12 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--enable-giflib \
 			--with-tremor \
 			--enable-lua \
-			--with-libdir=/usr/lib \
+			--with-libdir=/usr/ntrino/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
 			--with-configdir=/var/tuxbox/config \
 			--with-gamesdir=/var/tuxbox/games \
-			--with-plugindir=/var/tuxbox/plugins \
+			--with-plugindir=/var/ntrino/SystemPlugins \
 			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
 			--with-localedir=/usr/share/tuxbox/neutrino/locale \
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
