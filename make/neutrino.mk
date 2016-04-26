@@ -134,8 +134,8 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) libstb-hal-cst-next
 		[ -d "$(archivedir)/neutrino-mp-cst-next.git" ] || \
 		git clone https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(archivedir)/neutrino-mp-cst-next.git; \
 		cp -ra $(archivedir)/neutrino-mp-cst-next.git $(sourcedir)/neutrino-mp-cst-next; \
-		cp -ra $(sourcedir)/neutrino-mp-cst-next $(sourcedir)/neutrino-mp-cst-next.org \
-	fi \
+		cp -ra $(sourcedir)/neutrino-mp-cst-next $(sourcedir)/neutrino-mp-cst-next.org; \
+	fi;
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(sourcedir)/neutrino-mp-cst-next && patch -p1 -i $$i; \
