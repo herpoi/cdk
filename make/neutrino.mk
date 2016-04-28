@@ -163,7 +163,7 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--with-fontdir=/usr/share/fonts \
 			--with-configdir=/var/tuxbox/config \
 			--with-gamesdir=/var/tuxbox/games \
-			--with-plugindir=/var/ntrino/SystemPlugins \
+			--with-plugindir=/usr/ntrino/SystemPlugins \
 			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
 			--with-localedir=/usr/share/tuxbox/neutrino/locale \
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
