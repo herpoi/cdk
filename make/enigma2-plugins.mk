@@ -49,7 +49,7 @@ $(D)/tuxtxt32bpp: tuxtxtlib @DEPENDS_tuxtxt32bpp@
 #
 # Plugins
 # enigma2_openwebif
-$(D)/enigma2-plugins: enigma2_networkbrowser
+$(D)/enigma2-plugins: enigma2_networkbrowser enigma2_openwebif
 
 #
 # enigma2-openwebif
