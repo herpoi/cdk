@@ -2,45 +2,11 @@
 # yaud-enigma2-pli-nightly
 #
 yaud-enigma2-pli-nightly: yaud-none host_python lirc \
-		boot-elf enigma2-pli-nightly-gst-debug enigma2-pli-nightly-gstepl-debug \
-		enigma2-pli-nightly-gst-nodebug enigma2-pli-nightly-gstepl-nodebug enigma2-plugins release_enigma2
+		boot-elf enigma2-pli-nightly enigma2-plugins release_enigma2
 	@TUXBOX_YAUD_CUSTOMIZE@
 
-yaud-enigma2-pli-nightly-gst-debug: yaud-none host_python lirc \
-		boot-elf enigma2-pli-nightly-gst-debug enigma2-plugins release_enigma2
-	@TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gstepl-debug: yaud-none host_python lirc \
-		boot-elf enigma2-pli-nightly-gstepl-debug enigma2-plugins release_enigma2
-	@TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gst-nodebug: yaud-none host_python lirc \
-		boot-elf enigma2-pli-nightly-gst-nodebug enigma2-plugins release_enigma2
-	@TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gstepl-nodebug: yaud-none host_python lirc \
-		boot-elf enigma2-pli-nightly-nogstepl-debug enigma2-plugins release_enigma2
-	@TUXBOX_YAUD_CUSTOMIZE@
-	
 yaud-enigma2-pli-nightly-recompile: release-enigma2-clean yaud-none host_python lirc \
-	boot-elf enigma2-pli-nightly-prepare-recompile-gst-debug enigma2-pli-nightly-prepare-recompile-gstepl-debug \
-	enigma2-pli-nightly-prepare-recompile-gst-nodebug enigma2-pli-nightly-prepare-recompile-gstepl-nodebug enigma2-plugins release_enigma2
-    @TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gst-debug-recompile: release-enigma2-clean yaud-none host_python lirc \
-	boot-elf enigma2-pli-nightly-prepare-recompile-gst-debug enigma2-plugins release_enigma2
-    @TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gstepl-debug-recompile: release-enigma2-clean yaud-none host_python lirc \
-	boot-elf enigma2-pli-nightly-prepare-recompile-gstepl-debug enigma2-plugins release_enigma2
-    @TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gst-nodebug-recompile: release-enigma2-clean yaud-none host_python lirc \
-	boot-elf enigma2-pli-nightly-prepare-recompile-gst-nodebug enigma2-plugins release_enigma2
-    @TUXBOX_YAUD_CUSTOMIZE@
-
-yaud-enigma2-pli-nightly-gstepl-nodebug-recompile: release-enigma2-clean yaud-none host_python lirc \
-	boot-elf enigma2-pli-nightly-prepare-recompile-gstepl-nodebug enigma2-plugins release_enigma2
+	boot-elf enigma2-pli-nightly-prepare-recompile enigma2-plugins release_enigma2
     @TUXBOX_YAUD_CUSTOMIZE@
 #
 # enigma2-pli-nightly
@@ -68,9 +34,46 @@ endif
 
 DATENOW=`date +%Y-%m-%d`
 
+$(D)/enigma2-pli-nightly.do_prepare_backup: | $(ENIGMA2_DEPS)
+	REVISION=""; \
+	HEAD="master"; \
+	DIFF="0"; \
+	clear; \
+	echo ""; \
+	echo "Choose between the following revisions:"; \
+	echo "========================================================================================================"; \
+	echo " 0) Newest                 - E2 OpenPli gstreamer / libplayer3    (Can fail due to outdated patch)     "; \
+	echo "========================================================================================================"; \
+	echo " 1) Use your own e2 git dir without patchfile"; \
+	echo "========================================================================================================"; \
+	echo " 2) Mon, 17 Aug 2015 07:08 - E2 OpenPli gstreamer / libplayer3 cd5505a4b8aba823334032bb6fd7901557575455"; \
+	echo "========================================================================================================"; \
+	echo "Media Framework : $(MEDIAFW)"; \
+	echo "External LCD    : $(EXTERNALLCD)"; \
+	read -p "Select          : "; \
+	[ "$$REPLY" == "0" ] && DIFF="0"; \
+	[ "$$REPLY" == "1" ] && DIFF="1" && REVISION=""; \
+	[ "$$REPLY" == "2" ] && DIFF="2" && REVISION="cd5505a4b8aba823334032bb6fd7901557575455"; \
+	echo "Revision        : "$$REVISION; \
+	echo ""; \
+	if [ "$$REPLY" != "1" ]; then \
+		REPO="https://github.com/OpenPLi/enigma2.git"; \
+		rm -rf $(sourcedir)/enigma2-nightly; \
+		rm -rf $(sourcedir)/enigma2-nightly.org; \
+		[ -d "$(archivedir)/enigma2-pli-nightly.git" ] && \
+		(cd $(archivedir)/enigma2-pli-nightly.git; git pull; git checkout HEAD; cd "$(buildprefix)";); \
+		[ -d "$(archivedir)/enigma2-pli-nightly.git" ] || \
+		git clone -b $$HEAD $$REPO $(archivedir)/enigma2-pli-nightly.git; \
+		cp -ra $(archivedir)/enigma2-pli-nightly.git $(sourcedir)/enigma2-nightly; \
+		[ "$$REVISION" == "" ] || (cd $(sourcedir)/enigma2-nightly; git checkout "$$REVISION"; cd "$(buildprefix)";); \
+		cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly.org; \
+		set -e; cd $(sourcedir)/enigma2-nightly && patch -p1 < "../../cdk/Patches/enigma2-pli-nightly.$$DIFF.diff"; \
+	fi
+	touch $@
+
 $(D)/enigma2-pli-nightly.do_prepare: | $(ENIGMA2_DEPS)
 	REVISION=""; \
-	BRANCH="trunk"; \
+	BRANCH="master"; \
 	REPO="https://github.com/herpoi/GraterliaOS-OpenPLi.git"; \
 	rm -rf $(sourcedir)/enigma2-nightly; \
 	rm -rf $(sourcedir)/enigma2-nightly.org; \
@@ -82,11 +85,10 @@ $(D)/enigma2-pli-nightly.do_prepare: | $(ENIGMA2_DEPS)
 	[ "$$REVISION" == "" ] || (cd $(sourcedir)/enigma2-nightly; git checkout "$$REVISION"; cd "$(buildprefix)";); \
 	touch $@
 	
-$(sourcedir)/enigma2-pli-nightly-gstepl/config.status:
-	cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly-gstepl; \
-	sed -i 's/\"OpenPLi Enigma2 crash log\\n\\n\"/\"OpenPLi Enigma2 crash log\\n\\n\"\n\t\t\t\"GOS Version: enigma2-multiframework-'"$(DATENOW)"'\\n\"/g' $(sourcedir)/enigma2-nightly-gstepl/main/bsod.cpp; \
-	sed -i 's/\" - Branch: \"/\"-debug - Branch: \"/g' $(sourcedir)/enigma2-nightly-gstepl/main/version_info.cpp; \
-	cd $(sourcedir)/enigma2-nightly-gstepl && \
+$(sourcedir)/enigma2-pli-nightly-gsteplayer/config.status:
+	cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly-gsteplayer; \
+	sed -i 's/xml.string(\"version\", PACKAGE_VERSION);/xml.string(\"version\", PACKAGE_VERSION);\n\t\txml.string(\"GOSversion\", \"enigma2-multiframework-'"$(DATENOW)"'\");/g' $(sourcedir)/enigma2-nightly-gsteplayer/main/bsod.cpp; \
+	cd $(sourcedir)/enigma2-nightly-gsteplayer && \
 		./autogen.sh && \
 		sed -e 's|#!/usr/bin/python|#!$(hostprefix)/bin/python|' -i po/xml2po.py && \
 		$(BUILDENV) \
@@ -99,34 +101,6 @@ $(sourcedir)/enigma2-pli-nightly-gstepl/config.status:
 			--bindir=/usr/bin \
 			--prefix=/usr \
 			--sysconfdir=/etc \
-			--with-boxtype=none \
-			--with-gstversion=1.0 \
-			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
-			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
-			PY_PATH=$(targetprefix)/usr \
-			$(PLATFORM_CPPFLAGS) \
-			$(E_CONFIG_OPTS) \
-			$(E_CONFIG_OPTS_EPLAYER) \
-			$(E_CONFIG_OPTS_GST)
-
-$(sourcedir)/enigma2-pli-nightly-gstepl-nodebug/config.status:
-	cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly-gstepl-nodebug; \
-	sed -i 's/\"OpenPLi Enigma2 crash log\\n\\n\"/\"OpenPLi Enigma2 crash log\\n\\n\"\n\t\t\t\"GOS Version: enigma2-multiframework-'"$(DATENOW)"'\\n\"/g' $(sourcedir)/enigma2-nightly-gstepl-nodebug/main/bsod.cpp; \
-	sed -i 's/\" - Branch: \"/\"-nodebug - Branch: \"/g' $(sourcedir)/enigma2-nightly-gstepl-nodebug/main/version_info.cpp; \
-	cd $(sourcedir)/enigma2-nightly-gstepl-nodebug && \
-		./autogen.sh && \
-		sed -e 's|#!/usr/bin/python|#!$(hostprefix)/bin/python|' -i po/xml2po.py && \
-		$(BUILDENV) \
-		./configure \
-			--build=$(build) \
-			--host=$(target) \
-			--with-libsdl=no \
-			--datadir=/usr/local/share \
-			--libdir=/usr/lib \
-			--bindir=/usr/bin \
-			--prefix=/usr \
-			--sysconfdir=/etc \
-			--without-debug \
 			--with-boxtype=none \
 			--with-gstversion=1.0 \
 			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
@@ -139,8 +113,7 @@ $(sourcedir)/enigma2-pli-nightly-gstepl-nodebug/config.status:
 			
 $(sourcedir)/enigma2-pli-nightly-gst/config.status:
 	cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly-gst; \
-	sed -i 's/\"OpenPLi Enigma2 crash log\\n\\n\"/\"OpenPLi Enigma2 crash log\\n\\n\"\n\t\t\t\"GOS Version: enigma2-gstreamer-'"$(DATENOW)"'\\n\"/g' $(sourcedir)/enigma2-nightly-gst/main/bsod.cpp; \
-	sed -i 's/\" - Branch: \"/\"-debug - Branch: \"/g' $(sourcedir)/enigma2-nightly-gst/main/version_info.cpp; \
+	sed -i 's/xml.string(\"version\", PACKAGE_VERSION);/xml.string(\"version\", PACKAGE_VERSION);\n\t\txml.string(\"GOSversion\", \"enigma2-gstreamer-'"$(DATENOW)"'\");/g' $(sourcedir)/enigma2-nightly-gst/main/bsod.cpp; \
 	cd $(sourcedir)/enigma2-nightly-gst && \
 		./autogen.sh && \
 		sed -e 's|#!/usr/bin/python|#!$(hostprefix)/bin/python|' -i po/xml2po.py && \
@@ -154,33 +127,6 @@ $(sourcedir)/enigma2-pli-nightly-gst/config.status:
 			--bindir=/usr/bin \
 			--prefix=/usr \
 			--sysconfdir=/etc \
-			--with-boxtype=none \
-			--with-gstversion=1.0 \
-			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
-			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
-			PY_PATH=$(targetprefix)/usr \
-			$(PLATFORM_CPPFLAGS) \
-			$(E_CONFIG_OPTS) \
-			$(E_CONFIG_OPTS_GST)
-
-$(sourcedir)/enigma2-pli-nightly-gst-nodebug/config.status:
-	cp -ra $(sourcedir)/enigma2-nightly $(sourcedir)/enigma2-nightly-gst-nodebug; \
-	sed -i 's/\"OpenPLi Enigma2 crash log\\n\\n\"/\"OpenPLi Enigma2 crash log\\n\\n\"\n\t\t\t\"GOS Version: enigma2-gstreamer-'"$(DATENOW)"'\\n\"/g' $(sourcedir)/enigma2-nightly-gst-nodebug/main/bsod.cpp; \
-	sed -i 's/\" - Branch: \"/\"-nodebug - Branch: \"/g' $(sourcedir)/enigma2-nightly-gst-nodebug/main/version_info.cpp; \
-	cd $(sourcedir)/enigma2-nightly-gst-nodebug && \
-		./autogen.sh && \
-		sed -e 's|#!/usr/bin/python|#!$(hostprefix)/bin/python|' -i po/xml2po.py && \
-		$(BUILDENV) \
-		./configure \
-			--build=$(build) \
-			--host=$(target) \
-			--with-libsdl=no \
-			--datadir=/usr/local/share \
-			--libdir=/usr/lib \
-			--bindir=/usr/bin \
-			--prefix=/usr \
-			--sysconfdir=/etc \
-			--without-debug \
 			--with-boxtype=none \
 			--with-gstversion=1.0 \
 			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
@@ -190,207 +136,122 @@ $(sourcedir)/enigma2-pli-nightly-gst-nodebug/config.status:
 			$(E_CONFIG_OPTS) \
 			$(E_CONFIG_OPTS_GST)
 			
-$(D)/enigma2-pli-nightly-gstepl.do_compile: $(sourcedir)/enigma2-pli-nightly-gstepl/config.status
-	cd $(sourcedir)/enigma2-nightly-gstepl && \
+$(sourcedir)/enigma2-pli-nightly/config.status_backup:
+	cd $(sourcedir)/enigma2-nightly && \
+		./autogen.sh && \
+		sed -e 's|#!/usr/bin/python|#!$(hostprefix)/bin/python|' -i po/xml2po.py && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--with-libsdl=no \
+			--datadir=/usr/local/share \
+			--libdir=/usr/lib \
+			--bindir=/usr/bin \
+			--prefix=/usr \
+			--sysconfdir=/etc \
+			--with-boxtype=none \
+			--with-gstversion=1.0 \
+			PKG_CONFIG=$(hostprefix)/bin/$(target)-pkg-config \
+			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
+			PY_PATH=$(targetprefix)/usr \
+			$(PLATFORM_CPPFLAGS) \
+			$(E_CONFIG_OPTS)
+
+$(D)/enigma2-pli-nightly.do_compile_backup: $(sourcedir)/enigma2-pli-nightly/config.status
+	cd $(sourcedir)/enigma2-nightly && \
 		$(MAKE) all
 	touch $@
 
-$(D)/enigma2-pli-nightly-gstepl-nodebug.do_compile: $(sourcedir)/enigma2-pli-nightly-gstepl-nodebug/config.status
-	cd $(sourcedir)/enigma2-nightly-gstepl-nodebug && \
+$(D)/enigma2-pli-nightly-gsteplayer.do_compile: $(sourcedir)/enigma2-pli-nightly-gsteplayer/config.status
+	cd $(sourcedir)/enigma2-nightly-gsteplayer && \
 		$(MAKE) all
 	touch $@
-	
+
 $(D)/enigma2-pli-nightly-gst.do_compile:$(sourcedir)/enigma2-pli-nightly-gst/config.status
 	cd $(sourcedir)/enigma2-nightly-gst && \
 		$(MAKE) all
 	touch $@
-
-$(D)/enigma2-pli-nightly-gst-nodebug.do_compile:$(sourcedir)/enigma2-pli-nightly-gst-nodebug/config.status
-	cd $(sourcedir)/enigma2-nightly-gst-nodebug && \
-		$(MAKE) all
-	touch $@
 	
-$(D)/enigma2-pli-nightly-gst-debug: enigma2-pli-nightly.do_prepare enigma2-pli-nightly-gst.do_compile
+$(D)/enigma2-pli-nightly_backup: enigma2-pli-nightly.do_prepare enigma2-pli-nightly.do_compile
+	$(MAKE) -C $(sourcedir)/enigma2-nightly install DESTDIR=$(targetprefix)
+	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
+		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
+	fi
+	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
+		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
+	fi
+	touch $@
+
+$(D)/enigma2-pli-nightly: enigma2-pli-nightly.do_prepare enigma2-pli-nightly-gsteplayer.do_compile enigma2-pli-nightly-gst.do_compile
+	$(MAKE) -C $(sourcedir)/enigma2-nightly-gsteplayer install DESTDIR=$(targetprefix)
+	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
+		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
+		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl; \
+	fi
+	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
+		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
+		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl; \
+	fi
 	$(MAKE) -C $(sourcedir)/enigma2-nightly-gst install DESTDIR=$(targetprefix)
 	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-debug; \
+		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst; \
 	fi
 	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-debug; \
+		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst; \
 	fi
 	touch $@
 
-$(D)/enigma2-pli-nightly-gstepl-debug: enigma2-pli-nightly.do_prepare enigma2-pli-nightly-gstepl.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gstepl install DESTDIR=$(targetprefix)
+$(D)/enigma2-pli-nightly-prepare-recompile: enigma2-pli-nightly-gsteplayer.do_compile enigma2-pli-nightly-gst.do_compile
+	$(MAKE) -C $(sourcedir)/enigma2-nightly-gsteplayer install DESTDIR=$(targetprefix)
 	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-debug; \
+		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl; \
 	fi
 	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-debug; \
+		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl; \
 	fi
-	touch $@
-	
-$(D)/enigma2-pli-nightly-gst-nodebug: enigma2-pli-nightly.do_prepare enigma2-pli-nightly-gst-nodebug.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gst-nodebug install DESTDIR=$(targetprefix)
-	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-nodebug; \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-nodebug; \
-	fi
-	touch $@
-
-$(D)/enigma2-pli-nightly-gstepl-nodebug: enigma2-pli-nightly.do_prepare enigma2-pli-nightly-gstepl-nodebug.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gstepl-nodebug install DESTDIR=$(targetprefix)
-	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-nodebug; \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-nodebug; \
-	fi
-	touch $@
-
-$(D)/enigma2-pli-nightly-prepare-recompile-gst-debug: enigma2-pli-nightly-gst.do_compile
 	$(MAKE) -C $(sourcedir)/enigma2-nightly-gst install DESTDIR=$(targetprefix)
 	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-debug; \
+		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst; \
 	fi
 	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
 		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-debug; \
-	fi
-	touch $@
-
-$(D)/enigma2-pli-nightly-prepare-recompile-gstepl-debug: enigma2-pli-nightly-gstepl.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gstepl install DESTDIR=$(targetprefix)
-	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-debug; \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-debug; \
-	fi
-	touch $@
-
-$(D)/enigma2-pli-nightly-prepare-recompile-gst-nodebug: enigma2-pli-nightly-gst-nodebug.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gst-nodebug install DESTDIR=$(targetprefix)
-	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-nodebug; \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst-nodebug; \
+		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gst; \
 	fi
 	touch $@
 	
-$(D)/enigma2-pli-nightly-prepare-recompile-gstepl-nodebug: enigma2-pli-nightly-gstepl-nodebug.do_compile
-	$(MAKE) -C $(sourcedir)/enigma2-nightly-gstepl-nodebug install DESTDIR=$(targetprefix)
-	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/bin/enigma2; \
-		mv $(targetprefix)/usr/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-nodebug; \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
-		$(target)-strip $(targetprefix)/usr/local/bin/enigma2; \
-		mv $(targetprefix)/usr/local/bin/enigma2 $(targetprefix)/usr/bin/enigma2-gstepl-nodebug; \
-	fi
-	touch $@
-
 enigma2-pli-nightly-clean:
 	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gstepl.do_compile
+	rm -f $(D)/enigma2-pli-nightly-gsteplayer.do_compile
 	rm -f $(D)/enigma2-pli-nightly-gst.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gstepl-nodebug.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gst-nodebug.do_compile
-	cd $(sourcedir)/enigma2-nightly-gstepl && \
+	cd $(sourcedir)/enigma2-nightly-gsteplayer && \
 		$(MAKE) distclean
 	cd $(sourcedir)/enigma2-nightly-gst && \
-		$(MAKE) distclean
-	cd $(sourcedir)/enigma2-nightly-gstepl-nodebug && \
-		$(MAKE) distclean
-	cd $(sourcedir)/enigma2-nightly-gst-nodebug && \
 		$(MAKE) distclean
 
 enigma2-pli-nightly-distclean:
 	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gstepl.do_compile
+	rm -f $(D)/enigma2-pli-nightly-gsteplayer.do_compile
 	rm -f $(D)/enigma2-pli-nightly-gst.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gstepl-nodebug.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gst-nodebug.do_compile
 	rm -f $(D)/enigma2-pli-nightly.do_prepare
 	rm -rf $(sourcedir)/enigma2-nightly
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl
+	rm -rf $(sourcedir)/enigma2-nightly-gsteplayer
 	rm -rf $(sourcedir)/enigma2-nightly-gst
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl-nodebug
-	rm -rf $(sourcedir)/enigma2-nightly-gst-nodebug
 	
 enigma2-pli-nightly-remake:
 	make enigma2-pli-nightly-distclean
 	make yaud-enigma2-pli-nightly
 
-enigma2-pli-nightly-gst-debug-remake:
-	make enigma2-pli-nightly-distclean
-	make yaud-enigma2-pli-nightly-gst-debug
-
-enigma2-pli-nightly-gstepl-debug-remake:
-	make enigma2-pli-nightly-distclean
-	make yaud-enigma2-pli-nightly-gstepl-debug
-
-enigma2-pli-nightly-gst-nodebug-remake:
-	make enigma2-pli-nightly-distclean
-	make yaud-enigma2-pli-nightly-gst-nodebug
-
-enigma2-pli-nightly-gstepl-nodebug-remake:
-	make enigma2-pli-nightly-distclean
-	make yaud-enigma2-pli-nightly-gstepl-nodebug
-	
 enigma2-pli-nightly-recompile:
 	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gstepl.do_compile
+	rm -f $(D)/enigma2-pli-nightly-gsteplayer.do_compile
 	rm -f $(D)/enigma2-pli-nightly-gst.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gstepl-nodebug.do_compile
-	rm -f $(D)/enigma2-pli-nightly-gst-nodebug.do_compile
 	rm -f $(D)/enigma2-pli-nightly.do_prepare
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl
+	rm -rf $(sourcedir)/enigma2-nightly-gsteplayer
 	rm -rf $(sourcedir)/enigma2-nightly-gst
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl-nodebug
-	rm -rf $(sourcedir)/enigma2-nightly-gst-nodebug
 	make yaud-enigma2-pli-nightly-recompile
-
-enigma2-pli-nightly-gst-debug-recompile:
-	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gst.do_compile
-	rm -f $(D)/enigma2-pli-nightly.do_prepare
-	rm -rf $(sourcedir)/enigma2-nightly-gst
-	make yaud-enigma2-pli-nightly-gst-debug-recompile
-
-enigma2-pli-nightly-gstepl-debug-recompile:
-	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gstepl.do_compile
-	rm -f $(D)/enigma2-pli-nightly.do_prepare
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl
-	make yaud-enigma2-pli-nightly-gstepl-debug-recompile
-
-enigma2-pli-nightly-gst-nodebug-recompile:
-	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gst-nodebug.do_compile
-	rm -f $(D)/enigma2-pli-nightly.do_prepare
-	rm -rf $(sourcedir)/enigma2-nightly-gst-nodebug
-	make yaud-enigma2-pli-nightly-gst-nodebug-recompile
-
-enigma2-pli-nightly-gstepl-nodebug-recompile:
-	rm -f $(D)/enigma2-pli-nightly
-	rm -f $(D)/enigma2-pli-nightly-gstepl-nodebug.do_compile
-	rm -f $(D)/enigma2-pli-nightly.do_prepare
-	rm -rf $(sourcedir)/enigma2-nightly-gstepl-nodebug
-	make yaud-enigma2-pli-nightly-gstepl-nodebug-recompile

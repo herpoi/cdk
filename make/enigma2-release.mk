@@ -893,33 +893,21 @@ endif
 	if [ -e $(targetprefix)/usr/bin/enigma2 ]; then \
 		cp -f $(targetprefix)/usr/bin/enigma2 $(prefix)/release/usr/local/bin/enigma2; \
 	fi
-	if [ -e $(targetprefix)/usr/bin/enigma2-gstepl-debug ]; then \
-		cp -f $(targetprefix)/usr/bin/enigma2-gstepl-debug $(prefix)/release/usr/bin/enigma2-multiframework-debug-$(DATENOW); \
+	if [ -e $(targetprefix)/usr/bin/enigma2-gstepl ]; then \
+		cp -f $(targetprefix)/usr/bin/enigma2-gstepl $(prefix)/release/usr/bin/enigma2-multiframework-$(DATENOW); \
 	fi
-	if [ -e $(targetprefix)/usr/bin/enigma2-gst-debug ]; then \
-		cp -f $(targetprefix)/usr/bin/enigma2-gst-debug $(prefix)/release/usr/bin/enigma2-debug-$(DATENOW); \
-	fi
-	if [ -e $(targetprefix)/usr/bin/enigma2-gstepl-nodebug ]; then \
-		cp -f $(targetprefix)/usr/bin/enigma2-gstepl-nodebug $(prefix)/release/usr/bin/enigma2-multiframework-$(DATENOW); \
-	fi
-	if [ -e $(targetprefix)/usr/bin/enigma2-gst-nodebug ]; then \
-		cp -f $(targetprefix)/usr/bin/enigma2-gst-nodebug $(prefix)/release/usr/bin/enigma2-$(DATENOW); \
+	if [ -e $(targetprefix)/usr/bin/enigma2-gst ]; then \
+		cp -f $(targetprefix)/usr/bin/enigma2-gst $(prefix)/release/usr/bin/enigma2-$(DATENOW); \
 	fi
 
 	if [ -e $(targetprefix)/usr/local/bin/enigma2 ]; then \
 		cp -f $(targetprefix)/usr/local/bin/enigma2 $(prefix)/release/usr/local/bin/enigma2; \
 	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2-gstepl-debug ]; then \
-		cp -f $(targetprefix)/usr/local/bin/enigma2-gstepl-debug $(prefix)/release/usr/local/bin/enigma2-multiframework-debug-$(DATENOW); \
+	if [ -e $(targetprefix)/usr/local/bin/enigma2-gstepl ]; then \
+		cp -f $(targetprefix)/usr/local/bin/enigma2-gstepl $(prefix)/release/usr/local/bin/enigma2-gstepl; \
 	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2-gst-debug ]; then \
-		cp -f $(targetprefix)/usr/local/bin/enigma2-gst-debug $(prefix)/release/usr/local/bin/enigma2-debug-$(DATENOW); \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2-gstepl-nodebug ]; then \
-		cp -f $(targetprefix)/usr/local/bin/enigma2-gstepl $(prefix)/release/usr/local/bin/enigma2-multiframework-$(DATENOW); \
-	fi
-	if [ -e $(targetprefix)/usr/local/bin/enigma2-gst-nodebug ]; then \
-		cp -f $(targetprefix)/usr/local/bin/enigma2-gst $(prefix)/release/usr/local/bin/enigma2-$(DATENOW); \
+	if [ -e $(targetprefix)/usr/local/bin/enigma2-gst ]; then \
+		cp -f $(targetprefix)/usr/local/bin/enigma2-gst $(prefix)/release/usr/local/bin/enigma2-gst; \
 	fi
 
 	cp -a $(targetprefix)/usr/local/share/enigma2/* $(prefix)/release/usr/local/share/enigma2
