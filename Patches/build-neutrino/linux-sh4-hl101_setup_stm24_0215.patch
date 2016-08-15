@@ -1,6 +1,6 @@
 --- a/arch/sh/boards/mach-mb442/setup.c
 +++ b/arch/sh/boards/mach-mb442/setup.c
-@@ -22,14 +22,30 @@
+@@ -22,14 +22,42 @@
  #include <linux/stm/platform.h>
  #include <linux/stm/stx7100.h>
  #include <asm/irl.h>
@@ -13,84 +13,101 @@
 +#define MB442_PIO_STE100P_RESET stm_gpio(3, 6)
  #define MB442_PIO_FLASH_VPP stm_gpio(2, 7)
  
-+const char *LMI_VID_partalias[] = { "BPA2_Region1", "coredisplay-video", "gfx-memory", "v4l2-video-buffers", NULL };
-+const char *LMI_SYS_partalias[] = { "BPA2_Region0", "bigphysarea", "v4l2-coded-video-buffers", NULL };
  
++/* additional info:
++ 
++ LMI_SYS:
++ 0x06800000-0x07FFFFFF = 24MB RAM for linux
++ 
++ LMI_VID:
++ 0x10000000-0x103FFFFF = 4MB RAM for ST231-0 (video delta)
++ 0x10400000-0x107FFFFF = 4MB RAM for ST231-1 (audio delta)
++ 0x10800000-0x16FFFFFF = 96MB RAM for allocator
++*/
++
++const char *LMI_VID_partalias[] = { "BPA2_Region1", "coredisplay-video", "gfx-memory", "v4l2-video-buffers", "v4l2-coded-video-buffers", NULL };
++const char *LMI_SYS_partalias[] = { "BPA2_Region0", "bigphysarea", NULL };
++ 
 +static struct bpa2_partition_desc bpa2_parts_table[] = {
-+ {
-+         .name = "LMI_VID",
-+         .start = 0x10800000,
-+         .size = 0x03800000,
-+         .flags = 0,
-+         .aka = LMI_VID_partalias
-+ },
-+ {
-+         .name = "LMI_SYS",
-+         .start = 0,
-+         .size = 0x01400000,
-+         .flags = 0,
-+         .aka = LMI_SYS_partalias
-+ }
++	{
++		.name  = "LMI_VID",
++		.start = 0x10800000,
++		.size  = 0x06000000, /* 96 Mb */
++		.flags = 0,
++		.aka   = LMI_VID_partalias
++	},
++	{
++		.name  = "LMI_SYS",
++		.start = 0,
++		.size  = 0x01800000, /* 24 Mb */
++		.flags = 0,
++		.aka   = LMI_SYS_partalias
++	}
 +};
  
  void __init mb442_setup(char** cmdline_p)
  {
-@@ -43,6 +59,8 @@
+@@ -39,10 +67,12 @@
+ 
+ 	stx7100_configure_asc(2, &(struct stx7100_asc_config) {
+ 			.hw_flow_control = 0,
+-			.is_console = 1, });
++			.is_console = 0, });
  	stx7100_configure_asc(3, &(struct stx7100_asc_config) {
  			.hw_flow_control = 0,
- 			.is_console = 0, });
-+
-+	bpa2_init(bpa2_parts_table, ARRAY_SIZE(bpa2_parts_table));
+-			.is_console = 0, });
++			.is_console = 1, });
++			
++  	bpa2_init(bpa2_parts_table, ARRAY_SIZE(bpa2_parts_table));			
  }
  
  static struct resource mb442_smc91x_resources[] = {
-@@ -70,6 +88,36 @@
+@@ -70,6 +100,35 @@
  	gpio_set_value(MB442_PIO_FLASH_VPP, enable);
  }
  
-+static struct mtd_partition mtd_parts_table[] =
-+{
-+        {
-+                .name = "Boot Firmware",
-+                .size = 0x00040000,        //u-boot 0x00000000-0xa003ffff 256k
-+                .offset = 0x00000000,
-+                mask_flags: 0
-+        },
-+        {
-+                .name = "Boot Config",
-+                .size = 0x00020000,        //boot config 0xa0040000-0xa005ffff 128k
-+                .offset = 0x00040000,
-+         },
-+        {
-+                .name = "Kernel",
-+                .size = 0x00280000,        //kernel 0x40000-0x2dffff 2.5MB
-+                .offset = 0x00060000,
-+        },
-+        {
-+                .name = "ROOTFS (Backup)",
-+                .size = 0x002E0000,
-+                .offset = 0x00240000,
-+        },
-+         {
-+                .name = "Full without bootloader",
-+                .size = 0x00580000,
-+                .offset = 0x00040000,
-+        },
-+};
++static struct mtd_partition mtd_parts_table[] = {
++	{
++		.name	= "Boot Firmware",
++		.size	= 0x00040000,        //u-boot 0x00000000-0xa003ffff 256k
++		.offset	= 0x00000000,
++		mask_flags:0
++	},
++	{
++		.name	= "Boot Config",
++		.size	= 0x00020000,        //boot config 0xa0040000-0xa005ffff 128k
++		.offset	= 0x00040000,
++	},
++	{
++		.name	= "Kernel",
++		.size	= 0x00280000,        //kernel 0x40000-0x2dffff 2.5MB
++		.offset	= 0x00060000,
++	},
++	{
++		.name	= "ROOTFS (Backup)",
++		.size	= 0x002E0000,
++		.offset = 0x00240000,
++	},
++	{
++		.name	= "Full without bootloader",
++		.size	= 0x00580000,
++		.offset	= 0x00040000,
++	},
++};	
 +
  static struct platform_device mb442_physmap_flash = {
  	.name		= "physmap-flash",
  	.id		= -1,
-@@ -80,6 +128,8 @@
+@@ -80,6 +139,8 @@
  	.dev.platform_data = &(struct physmap_flash_data) {
  		.width		= 2,
  		.set_vpp	= mb442_set_vpp,
-+		.nr_parts        = ARRAY_SIZE(mtd_parts_table),
-+		.parts                = mtd_parts_table
++		.nr_parts	= ARRAY_SIZE(mtd_parts_table),
++		.parts		= mtd_parts_table
  	},
  };
  
-@@ -95,7 +145,7 @@
+@@ -95,7 +156,7 @@
  	return 1;
  }
  
@@ -99,7 +116,7 @@
  static int stmmac_phy_irqs[PHY_MAX_ADDR] = {
  	[STMMAC_PHY_ADDR] = IRL3_IRQ,
  };
-@@ -119,9 +169,9 @@
+@@ -119,9 +180,9 @@
  			.out0_enabled = 0,
  			.out1_enabled = 1, });
  
@@ -107,12 +124,12 @@
 -	stx7100_configure_ssc_spi(1, NULL);
 -	stx7100_configure_ssc_i2c(2, NULL);
 +	stx7100_configure_ssc_i2c(0);
-+        stx7100_configure_ssc_i2c(1);
-+        stx7100_configure_ssc_i2c(2);
++	stx7100_configure_ssc_i2c(1);
++	stx7100_configure_ssc_i2c(2);
  
  	stx7100_configure_usb();
  
-@@ -130,11 +180,6 @@
+@@ -130,11 +191,6 @@
  			.tx_enabled = 0,
  			.tx_od_enabled = 0, });
  
@@ -124,7 +141,7 @@
  	gpio_request(MB442_PIO_FLASH_VPP, "Flash VPP");
  	gpio_direction_output(MB442_PIO_FLASH_VPP, 0);
  
-@@ -149,14 +194,6 @@
+@@ -149,14 +205,6 @@
  			.mdio_bus_data = &stmmac_mdio_bus,
  		});
  
@@ -139,55 +156,35 @@
  	return platform_add_devices(mb442_devices,
  			ARRAY_SIZE(mb442_devices));
  }
-
-*** a/drivers/net/phy/phy_device.c
---- b/drivers/net/phy/phy_device.c
-***************
-*** 1104,1110 ****
-  		return retval;
-  	}
-  
-! 	pr_debug("%s: Registered new driver\n", new_driver->name);
-  
-  	return 0;
-  }
---- 1104,1110 ----
-  		return retval;
-  	}
-  
-! 	pr_info("%s: Registered new driver (0x%08x)\n", new_driver->name, new_driver->phy_id);
-  
-  	return 0;
-  }
-*** a/drivers/net/stmmac/stmmac_mdio.c
---- b/drivers/net/stmmac/stmmac_mdio.c
-***************
-*** 194,202 ****
-  			 * and no PHY number was provided to the MAC,
-  			 * use the one probed here.
-  			 */
-! 			if ((priv->plat->bus_id == mdio_bus_data->bus_id) &&
-! 			    (priv->plat->phy_addr == -1))
-! 				priv->plat->phy_addr = addr;
-  
-  			act = (priv->plat->bus_id == mdio_bus_data->bus_id) &&
-  				(priv->plat->phy_addr == addr);
---- 194,208 ----
-  			 * and no PHY number was provided to the MAC,
-  			 * use the one probed here.
-  			 */
-! 
-! 			 if ((priv->plat->bus_id == mdio_bus_data->bus_id) && ((priv->plat->phy_addr == -1) ||
-! 			 (phydev->phy_id == 0x0181b880) || // Davicom DM9161E
-! 			 (phydev->phy_id == 0x0181b8a0) || // Davicom DM9161A
-! 			 (phydev->phy_id == 0x00181b80) || // Davicom DM9131
-! 			 (phydev->phy_id == 0x1c040011) || // STe100p
-! 			 (phydev->phy_id == 0x00061c50) || // STe101p
-! 			 (phydev->phy_id == 0x001cc912))) // RTL821x
-! 			 priv->plat->phy_addr = addr;
-  
-  			act = (priv->plat->bus_id == mdio_bus_data->bus_id) &&
-  				(priv->plat->phy_addr == addr);
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1104,7 +1104,7 @@
+ 		return retval;
+ 	}
+ 
+-	pr_debug("%s: Registered new driver\n", new_driver->name);
++	pr_info("%s: Registered new driver (0x%08x)\n", new_driver->name, new_driver->phy_id);
+ 
+ 	return 0;
+ }
+--- a/drivers/net/stmmac/stmmac_mdio.c
++++ b/drivers/net/stmmac/stmmac_mdio.c
+@@ -194,8 +194,13 @@
+ 			 * and no PHY number was provided to the MAC,
+ 			 * use the one probed here.
+ 			 */
+-			if ((priv->plat->bus_id == mdio_bus_data->bus_id) &&
+-			    (priv->plat->phy_addr == -1))
++			if ((priv->plat->bus_id == mdio_bus_data->bus_id) && ((priv->plat->phy_addr == -1) ||
++			    (phydev->phy_id == 0x0181b880) || // Davicom DM9161E
++			    (phydev->phy_id == 0x0181b8a0) || // Davicom DM9161A
++			    (phydev->phy_id == 0x00181b80) || // Davicom DM9131
++			    (phydev->phy_id == 0x1c040011) || // STe100p
++			    (phydev->phy_id == 0x00061c50) || // STe101p
++			    (phydev->phy_id == 0x001cc912))) // RTL821x
+ 				priv->plat->phy_addr = addr;
+ 
+ 			act = (priv->plat->bus_id == mdio_bus_data->bus_id) &&
 --- a/include/linux/stm/stx7100.h
 +++ b/include/linux/stm/stx7100_orig.h
 @@ -34,15 +34,11 @@

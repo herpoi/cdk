@@ -1,7 +1,6 @@
-diff -Nur xupnpd.svn/Makefile xupnpd/Makefile
---- xupnpd.svn/src/Makefile	2014-01-24 15:08:35.352192000 +0100
-+++ xupnpd/src/Makefile	2014-01-25 17:39:03.109327833 +0100
-@@ -56,6 +56,22 @@
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -83,6 +83,22 @@
  dreambox:
  	$(MAKE) embedded TARGET=mipsel_dreambox SDK=/opt/mipsel-unknown-linux-gnu/bin
  
@@ -20,13 +19,12 @@ diff -Nur xupnpd.svn/Makefile xupnpd/Makefile
 +	if ( test ! -d $(DESTDIR)/usr/share/xupnpd ) ; then mkdir -p $(DESTDIR)/usr/share/xupnpd ; fi
 +	cp -ap plugins profiles ui www *.lua $(DESTDIR)/usr/share/xupnpd/
 +	if ( test ! -d $(DESTDIR)/etc/init.d ) ; then mkdir -p $(DESTDIR)/etc/init.d ; fi
-+	install -m 755 xupnpd.init $(DESTDIR)/etc/init.d
++	install -m 755 xupnpd.init $(DESTDIR)/etc/init.d/xupnpd
  
  embedded:
- 	export PATH
-diff -Nur xupnpd.svn/plugins/xupnpd_coolstream.lua xupnpd/plugins/xupnpd_coolstream.lua
---- xupnpd.svn/src/plugins/xupnpd_coolstream.lua	1970-01-01 01:00:00.000000000 +0100
-+++ xupnpd/src/plugins/xupnpd_coolstream.lua	2014-01-24 23:16:55.518278000 +0100
+ 	PATH=$(PATH):$(UTILS) $(MAKE) -C $(LUA) CC=$(SDK)/$(CC) a MYCFLAGS='$(LUAMYCFLAGS)'
+--- a/src/plugins/xupnpd_coolstream.lua
++++ b/src/plugins/xupnpd_coolstream.lua
 @@ -0,0 +1,177 @@
 +-- Plugin for converting channels lists from coolstream receivers
 +-- Author focus.cst@gmail.com
@@ -205,9 +203,8 @@ diff -Nur xupnpd.svn/plugins/xupnpd_coolstream.lua xupnpd/plugins/xupnpd_coolstr
 +plugins.coolstream.updatefeed=cst_updatefeed
 +plugins.coolstream.sendurl=cst_sendurl
 +end
-diff -Nur xupnpd.svn/xupnpd.init xupnpd/xupnpd.init
---- xupnpd.svn/src/xupnpd.init	1970-01-01 01:00:00.000000000 +0100
-+++ xupnpd/src/xupnpd.init	2014-01-24 22:48:55.838204000 +0100
+--- a/src/xupnpd.init
++++ b/src/xupnpd.init
 @@ -0,0 +1,14 @@
 +#!/bin/sh
 +case "$1" in
@@ -223,9 +220,8 @@ diff -Nur xupnpd.svn/xupnpd.init xupnpd/xupnpd.init
 +		) &
 +		;;
 +esac
-diff -Nur xupnpd.svn/xupnpd.lua xupnpd/xupnpd.lua
---- xupnpd.svn/src/xupnpd.lua	2014-01-24 15:08:35.824192000 +0100
-+++ xupnpd/src/xupnpd.lua	2014-01-25 17:30:01.225305368 +0100
+--- a/src/xupnpd.lua
++++ b/src/xupnpd.lua
 @@ -1,13 +1,13 @@
  cfg={}
  
@@ -264,7 +260,7 @@ diff -Nur xupnpd.svn/xupnpd.lua xupnpd/xupnpd.lua
  
  -- 'cfg.proxy' enables proxy for injection DLNA headers to stream
  -- 0-off, 1-radio, 2-radio/TV
-@@ -48,16 +48,17 @@
+@@ -48,19 +48,20 @@
  cfg.dlna_notify=true
  
  -- UPnP/DLNA subscribe ttl
@@ -284,7 +280,11 @@ diff -Nur xupnpd.svn/xupnpd.lua xupnpd/xupnpd.lua
 +cfg.name=io.popen("uname -n"):read("*l")..'-xupnpd'
  
  -- static device UUID, '60bd2fb3-dabe-cb14-c766-0e319b54c29a' for example or nil
- cfg.uuid='60bd2fb3-dabe-cb14-c766-0e319b54c29a'
+-cfg.uuid='60bd2fb3-dabe-cb14-c766-0e319b54c29a'
++cfg.uuid=''
+ 
+ -- max url cache size
+ cfg.cache_size=8
 @@ -72,12 +73,14 @@
  cfg.default_mime_type='mpeg'
  
@@ -334,3 +334,36 @@ diff -Nur xupnpd.svn/xupnpd.lua xupnpd/xupnpd.lua
  cfg.ui_path='./ui/'
  cfg.drive=''                    -- reload playlists only if drive state=active/idle, example: cfg.drive='/dev/sda'
  cfg.profiles='./profiles/'      -- device profiles feature
+--- a/src/ui/xupnpd_ui.lua
++++ b/src/ui/xupnpd_ui.lua
+@@ -531,7 +531,7 @@ function ui_api_call(args)
+ end
+ 
+ function ui_restart()
+-    if core.restart(cfg.pid_file,"./xupnpd") then http.send('<h3>Attempt to restart...</h3>') else http.send('<h3>Unable to restart.</h3>') end
++    if core.restart(cfg.pid_file,"/usr/bin/xupnpd") then http.send('<h3>Attempt to restart...</h3>') else http.send('<h3>Unable to restart.</h3>') end
+ 
+     http.send('<br/><form method=get action="/ui"><input class="btn btn-primary" type=submit value=OK></form>')
+ 
+--- a/src/xupnpd_m3u.lua
++++ b/src/xupnpd_m3u.lua
+@@ -79,6 +79,7 @@ end
+ 
+ function reload_playlists()
+     playlist_data={}
++    collectgarbage()   -- free unused memory immediately
+     playlist_data.name='root'
+     playlist_data.objid='0'
+     playlist_data.size=0
+--- a/src/xupnpd_main.lua
++++ b/src/xupnpd_main.lua
+@@ -2,6 +2,9 @@
+ -- clark15b@gmail.com
+ -- https://tsdemuxer.googlecode.com/svn/trunk/xupnpd
+ 
++-- fix memleak on coolstream boxes by changing collectgarbage() interval from 200 (default) to 50
++collectgarbage('setpause', 50)
++
+ http.sendurl_buffer_size(32768,1);
+ 
+ if cfg.daemon==true then core.detach() end
