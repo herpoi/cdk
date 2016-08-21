@@ -41,7 +41,7 @@ libungif-4.1.4.tar.bz2;http://heanet.dl.sourceforge.net/sourceforge/giflib
 jpegsrc.v8d.tar.gz;http://www.ijg.org/files
 libjpeg-turbo-1.4.2.tar.gz;http://sourceforge.net/projects/libjpeg-turbo/files/1.4.2
 libpng-1.2.50.tar.bz2;http://sourceforge.net/projects/libpng/files/libpng12/1.2.50
-libpng-1.6.21.tar.gz;http://sourceforge.net/projects/libpng/files/libpng16/1.6.21
+libpng-1.6.24.tar.gz;http://sourceforge.net/projects/libpng/files/libpng16/1.6.24
 png++-0.2.9.tar.gz;http://download.savannah.gnu.org/releases/pngpp
 tiff-4.0.3.tar.gz;http://download.osgeo.org/libtiff
 pixman-0.18.0.tar.gz;http://cairographics.org/releases
@@ -103,7 +103,7 @@ ffmpeg-3.0.1.tar.bz2;http://ffmpeg.org/releases
 fdk-aac.git;git://github.com/mstorsjo/fdk-aac.git
 libcap-2.22.tar.bz2;http://mirror.linux.org.au/linux/libs/security/linux-privs/libcap2
 BroFS1.2.tgz;http://www.avalpa.com/assets/freesoft/other
-libdvbsi++-0.3.7.tar.bz2;http://www.saftware.de/libdvbsi++
+libdvbsi++.git;git://git.opendreambox.org/git/obi/libdvbsi++.git
 libmodplug-0.8.8.4.tar.gz;http://downloads.sourceforge.net/project/modplug-xmms/libmodplug/0.8.8.4
 lzo-2.06.tar.gz;http://www.oberhumer.com/opensource/lzo/download
 yajl.git;git://github.com/lloyd/yajl;f4b2b1af87483caac60e50e5352fc783d9b2de2d
@@ -142,7 +142,7 @@ curlftpfs-0.9.2.tar.gz;http://sourceforge.net/projects/curlftpfs/files/latest/do
 boost_1_53_0.tar.bz2;http://prdownloads.sourceforge.net/sourceforge/boost
 pngquant-1.1-src.tgz;ftp://ftp.simplesystems.org/pub/libpng/png/applications/pngquant
 mplayer-export-snapshot.tar.bz2;ftp://ftp.mplayerhq.hu/MPlayer/releases
-opkg-0.2.0.tar.gz;http://opkg.googlecode.com/files
+opkg-0.2.0.tar.gz;http://hdmedia-universe.com/file
 sysstat-11.1.2.tar.bz2;http://pagesperso-orange.fr/sebastien.godard
 ImageMagick-6.7.7-7.tar.bz2;ftp://ftp.fifi.org/pub/ImageMagick
 shairport.git;git://github.com/abrasive/shairport;1.0-dev
