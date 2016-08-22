@@ -121,7 +121,7 @@ ffmpeg;3.0.1;ffmpeg-3.0.1;ffmpeg-3.0.1.tar.bz2;extract:ffmpeg-3.0.1.tar.bz2;patc
 libfdk_aac;1.0;fdk-aac-1.0;fdk-aac.git;extract:fdk-aac.git
 evebrowser;0.0.1;evebrowser-0.0.1
 brofs;1.2;BroFS1.2;BroFS1.2.tgz;extract:BroFS1.2.tgz
-libdvbsipp;1.0;libdvbsi++-1.0;libdvbsi++.git;extract:libdvbsi++.git
+libdvbsipp;1.0;libdvbsi++-1.0;libdvbsi++.git;extract:libdvbsi++.git;patch:libdvbsi++-0.3.7.patch
 libmodplug;0.8.8.4;libmodplug-0.8.8.4;libmodplug-0.8.8.4.tar.gz;extract:libmodplug-0.8.8.4.tar.gz
 lzo;2.06;lzo-2.06;lzo-2.06.tar.gz;extract:lzo-2.06.tar.gz
 yajl;2.0.1;yajl-2.0.1;yajl.git;extract:yajl.git
